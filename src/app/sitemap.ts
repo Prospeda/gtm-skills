@@ -3,7 +3,8 @@ import { MetadataRoute } from 'next';
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://gtm-skills.com';
 
-  const pages = [
+  // Core pages
+  const corePages = [
     '',
     '/industry',
     '/industry/saas',
@@ -36,20 +37,48 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/methodology/value-selling',
     '/methodology/gap-selling',
     '/free-tools',
-    '/free-tools/tonalities',
-    '/free-tools/tonalities/steve-jobs',
-    '/free-tools/tonalities/jeff-bezos',
-    '/free-tools/tonalities/chris-voss',
-    '/free-tools/tonalities/hemingway',
-    '/free-tools/tonalities/cormac-mccarthy',
     '/free-tools/clawdbot',
+    '/free-tools/mcp-server',
+    '/free-tools/claude-integrations',
     '/download',
   ];
 
-  return pages.map((path) => ({
+  // All 24 tonality pages
+  const tonalities = [
+    'alex-hormozi',
+    'challenger',
+    'chris-voss',
+    'command-of-message',
+    'competitive-displacement',
+    'cormac-mccarthy',
+    'david-ogilvy',
+    'executive-briefing',
+    'expansion-upsell',
+    'gap-selling',
+    'hemingway',
+    'jeff-bezos',
+    'meddic',
+    'naval-ravikant',
+    'pain-point-research',
+    'sandler',
+    'seth-godin',
+    'socratic',
+    'spin-selling',
+    'steve-jobs',
+    'trusted-advisor',
+    'value-based',
+    'warren-buffett',
+    'win-back',
+  ];
+
+  const tonalityPages = ['/free-tools/tonalities', ...tonalities.map((t) => `/free-tools/tonalities/${t}`)];
+
+  const allPages = [...corePages, ...tonalityPages];
+
+  return allPages.map((path) => ({
     url: `${baseUrl}${path}`,
     lastModified: new Date(),
     changeFrequency: path === '' ? 'daily' : 'weekly',
-    priority: path === '' ? 1 : 0.8,
+    priority: path === '' ? 1 : path.includes('tonalities') ? 0.7 : 0.8,
   }));
 }
