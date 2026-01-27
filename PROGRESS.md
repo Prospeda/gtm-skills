@@ -10,16 +10,17 @@
 
 | Task | Status | Owner | Notes |
 |------|--------|-------|-------|
-| Create gtm-skills repo | ✅ Done | Caleb | Local repo initialized |
+| Create gtm-skills repo | ✅ Done | Caleb | github.com/Prospeda/gtm-skills |
 | Domain migration planning | ✅ Done | Caleb | Plan documented |
-| Add gtm-skills.com to Vercel | 🔲 Todo | | |
-| Configure DNS | 🔲 Todo | | |
-| Update codebase domain refs | 🔲 Todo | | |
+| Update codebase domain refs | ✅ Done | Caleb | 20 files updated |
+| Migrate content from claude-gtm-skills | ✅ Done | Caleb | All prompts migrated |
+| Merge web app into gtm-skills | ✅ Done | Caleb | Single unified repo |
+| Create comprehensive README | ✅ Done | Caleb | With badges, CTAs |
+| Push repo to GitHub | ✅ Done | Caleb | Initial commit pushed |
+| Add gtm-skills.com to Vercel | 🔄 In Progress | | |
+| Configure DNS (Spaceship) | 🔲 Todo | | |
 | Email domain setup (Resend) | 🔲 Todo | | |
 | GSC property creation | 🔲 Todo | | |
-| Push repo to GitHub | 🔲 Todo | | |
-| Migrate content from claude-gtm-skills | 🔲 Todo | | |
-| Create comprehensive README | 🔲 Todo | | |
 
 ### Blockers
 - None currently
@@ -29,6 +30,8 @@
 - Branding: Community-first, maintained by Prospeda
 - License: MIT for maximum adoption
 - Old domain: Sunset (minimal traffic)
+- **Single repo strategy**: All code + content in gtm-skills (not separate repos)
+- Domain registrar: Spaceship
 
 ---
 
@@ -61,10 +64,16 @@
 - [x] Strategic plan created (PLAN.md)
 - [x] Progress tracker created (PROGRESS.md)
 - [x] Local repo initialized
+- [x] GitHub repo created (github.com/Prospeda/gtm-skills)
+- [x] All codebase domain refs updated (claudeforgtm.com → gtm-skills.com)
+- [x] Branding updated (Claude for GTM → GTM Skills)
+- [x] Web app merged into gtm-skills repo (single source of truth)
+- [x] Build verified successful
+- [x] CLAUDE.md created with persistent notes
 
 **In Progress:**
-- [ ] Domain migration execution
-- [ ] GitHub repo setup
+- [ ] Vercel domain configuration
+- [ ] DNS setup at Spaceship
 
 **Learnings:**
 - Site only 1-2 days old = ideal migration timing

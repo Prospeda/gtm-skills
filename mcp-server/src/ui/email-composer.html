@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cold Email Composer</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #18181b;
+      color: #fafafa;
+      padding: 16px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #27272a;
+    }
+
+    .header h1 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #22d3ee;
+    }
+
+    .badge {
+      background: #22d3ee20;
+      color: #22d3ee;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .recipient {
+      background: #27272a;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+
+    .recipient-label {
+      font-size: 11px;
+      color: #71717a;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .recipient-value {
+      font-size: 14px;
+      color: #a1a1aa;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      overflow-x: auto;
+    }
+
+    .tab {
+      padding: 8px 16px;
+      border-radius: 6px;
+      background: #27272a;
+      border: 1px solid #3f3f46;
+      color: #a1a1aa;
+      font-size: 13px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .tab:hover {
+      background: #3f3f46;
+    }
+
+    .tab.active {
+      background: #22d3ee20;
+      border-color: #22d3ee;
+      color: #22d3ee;
+    }
+
+    .email-card {
+      background: #27272a;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .email-header {
+      padding: 16px;
+      border-bottom: 1px solid #3f3f46;
+    }
+
+    .subject-line {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fafafa;
+    }
+
+    .email-body {
+      padding: 16px;
+      font-size: 14px;
+      color: #d4d4d8;
+      white-space: pre-wrap;
+    }
+
+    .email-body p {
+      margin-bottom: 12px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      background: #18181b;
+      border-top: 1px solid #3f3f46;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f97316, #ef4444);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-secondary {
+      background: #3f3f46;
+      color: #fafafa;
+    }
+
+    .btn-secondary:hover {
+      background: #52525b;
+    }
+
+    .tips {
+      background: #22d3ee10;
+      border: 1px solid #22d3ee30;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 16px;
+    }
+
+    .tips h3 {
+      font-size: 12px;
+      color: #22d3ee;
+      margin-bottom: 8px;
+    }
+
+    .tips ul {
+      font-size: 12px;
+      color: #a1a1aa;
+      padding-left: 16px;
+    }
+
+    .tips li {
+      margin-bottom: 4px;
+    }
+
+    .copied {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #22c55e;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .copied.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Cold Email Composer</h1>
+      <span class="badge" id="tone-badge">Professional</span>
+    </div>
+
+    <div class="recipient">
+      <div class="recipient-label">To</div>
+      <div class="recipient-value" id="recipient">Loading...</div>
+    </div>
+
+    <div class="tabs" id="version-tabs">
+      <button class="tab active" data-version="1">Direct Approach</button>
+      <button class="tab" data-version="2">Insight-Led</button>
+      <button class="tab" data-version="3">Question-Based</button>
+    </div>
+
+    <div class="email-card">
+      <div class="email-header">
+        <div class="subject-line" id="subject">Loading...</div>
+      </div>
+      <div class="email-body" id="body">Loading email content...</div>
+      <div class="actions">
+        <button class="btn btn-primary" id="copy-btn">Copy Email</button>
+        <button class="btn btn-secondary" id="edit-btn">Edit in Claude</button>
+      </div>
+    </div>
+
+    <div class="tips">
+      <h3>Before Sending</h3>
+      <ul>
+        <li>Verify the recipient's email address</li>
+        <li>Personalize the [BRACKETED] sections</li>
+        <li>Check for recent news to reference</li>
+        <li>Send Tuesday-Thursday, 8-10am their timezone</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="copied" id="copied-toast">Copied to clipboard!</div>
+
+  <script>
+    // State
+    let emailData = {
+      recipient: '',
+      versions: [],
+      currentVersion: 0,
+      tone: 'professional'
+    };
+
+    // DOM elements
+    const recipientEl = document.getElementById('recipient');
+    const subjectEl = document.getElementById('subject');
+    const bodyEl = document.getElementById('body');
+    const toneBadge = document.getElementById('tone-badge');
+    const tabs = document.getElementById('version-tabs');
+    const copyBtn = document.getElementById('copy-btn');
+    const editBtn = document.getElementById('edit-btn');
+    const copiedToast = document.getElementById('copied-toast');
+
+    // Parse email content from markdown
+    function parseEmailContent(markdown) {
+      const versions = [];
+      const versionRegex = /## Version \d+: ([^\n]+)\n\n\*\*Subject:\*\* ([^\n]+)\n\n([\s\S]*?)(?=---|\n## Version|$)/g;
+
+      let match;
+      while ((match = versionRegex.exec(markdown)) !== null) {
+        versions.push({
+          name: match[1].trim(),
+          subject: match[2].trim(),
+          body: match[3].trim()
+        });
+      }
+
+      return versions;
+    }
+
+    // Update display
+    function updateDisplay() {
+      const version = emailData.versions[emailData.currentVersion];
+      if (version) {
+        subjectEl.textContent = version.subject;
+        bodyEl.textContent = version.body;
+      }
+
+      recipientEl.textContent = emailData.recipient;
+      toneBadge.textContent = emailData.tone.charAt(0).toUpperCase() + emailData.tone.slice(1);
+
+      // Update active tab
+      tabs.querySelectorAll('.tab').forEach((tab, index) => {
+        tab.classList.toggle('active', index === emailData.currentVersion);
+        if (emailData.versions[index]) {
+          tab.textContent = emailData.versions[index].name;
+        }
+      });
+    }
+
+    // Tab click handler
+    tabs.addEventListener('click', (e) => {
+      if (e.target.classList.contains('tab')) {
+        const version = parseInt(e.target.dataset.version) - 1;
+        if (version >= 0 && version < emailData.versions.length) {
+          emailData.currentVersion = version;
+          updateDisplay();
+        }
+      }
+    });
+
+    // Copy button
+    copyBtn.addEventListener('click', async () => {
+      const version = emailData.versions[emailData.currentVersion];
+      if (version) {
+        const text = `Subject: ${version.subject}\n\n${version.body}`;
+        await navigator.clipboard.writeText(text);
+
+        copiedToast.classList.add('show');
+        setTimeout(() => copiedToast.classList.remove('show'), 2000);
+      }
+    });
+
+    // Edit button - send request back to host
+    editBtn.addEventListener('click', () => {
+      const version = emailData.versions[emailData.currentVersion];
+      window.parent.postMessage({
+        jsonrpc: '2.0',
+        method: 'tools/call',
+        params: {
+          name: 'draft_cold_email',
+          arguments: {
+            ...emailData.originalArgs,
+            additionalContext: `Please refine version ${emailData.currentVersion + 1}: "${version.name}"`
+          }
+        },
+        id: Date.now()
+      }, '*');
+    });
+
+    // Listen for messages from host
+    window.addEventListener('message', (event) => {
+      const data = event.data;
+
+      if (data.type === 'tool_result') {
+        const content = data.content;
+
+        // Parse the markdown content
+        emailData.versions = parseEmailContent(content.text);
+        emailData.recipient = content.recipient || 'Unknown';
+        emailData.tone = content.tone || 'professional';
+        emailData.originalArgs = content.args;
+
+        updateDisplay();
+      }
+    });
+
+    // Request initial data from host
+    window.parent.postMessage({
+      jsonrpc: '2.0',
+      method: 'ui/ready',
+      id: Date.now()
+    }, '*');
+  </script>
+</body>
+</html>

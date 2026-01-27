@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Company Research</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #18181b;
+      color: #fafafa;
+      padding: 16px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .company-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #27272a;
+    }
+
+    .company-logo {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .company-info h1 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .company-meta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .meta-item {
+      font-size: 12px;
+      color: #71717a;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .section {
+      background: #27272a;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: #3f3f46;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .section-header:hover {
+      background: #52525b;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-icon {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .expand-icon {
+      transition: transform 0.2s;
+      color: #71717a;
+    }
+
+    .section.expanded .expand-icon {
+      transform: rotate(180deg);
+    }
+
+    .section-content {
+      padding: 16px;
+      display: none;
+    }
+
+    .section.expanded .section-content {
+      display: block;
+    }
+
+    .checklist {
+      list-style: none;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 8px 0;
+      border-bottom: 1px solid #3f3f46;
+      font-size: 13px;
+      color: #d4d4d8;
+    }
+
+    .checklist li:last-child {
+      border-bottom: none;
+    }
+
+    .checkbox {
+      width: 18px;
+      height: 18px;
+      border: 2px solid #52525b;
+      border-radius: 4px;
+      flex-shrink: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .checkbox.checked {
+      background: #22c55e;
+      border-color: #22c55e;
+    }
+
+    .checkbox.checked::after {
+      content: '✓';
+      color: white;
+      font-size: 12px;
+    }
+
+    .action-items {
+      background: #22d3ee10;
+      border: 1px solid #22d3ee30;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+
+    .action-items h3 {
+      font-size: 14px;
+      color: #22d3ee;
+      margin-bottom: 12px;
+    }
+
+    .action-items ol {
+      font-size: 13px;
+      color: #a1a1aa;
+      padding-left: 20px;
+    }
+
+    .action-items li {
+      margin-bottom: 8px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .btn {
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      flex: 1;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f97316, #ef4444);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #3f3f46;
+      color: #fafafa;
+    }
+
+    .copied {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #22c55e;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .copied.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="company-header">
+      <div class="company-logo" id="logo">Co</div>
+      <div class="company-info">
+        <h1 id="company-name">Company Name</h1>
+        <div class="company-meta">
+          <span class="meta-item" id="industry">Loading...</span>
+          <span class="meta-item" id="size">-</span>
+          <span class="meta-item" id="location">-</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section expanded" data-section="overview">
+      <div class="section-header">
+        <span class="section-title">
+          <span class="section-icon">🏢</span>
+          Company Overview
+        </span>
+        <span class="expand-icon">▼</span>
+      </div>
+      <div class="section-content">
+        <ul class="checklist" id="overview-checklist">
+          <li>
+            <span class="checkbox" data-item="products"></span>
+            <span>Products/services offered</span>
+          </li>
+          <li>
+            <span class="checkbox" data-item="size"></span>
+            <span>Company size and revenue</span>
+          </li>
+          <li>
+            <span class="checkbox" data-item="funding"></span>
+            <span>Funding/ownership status</span>
+          </li>
+          <li>
+            <span class="checkbox" data-item="growth"></span>
+            <span>Growth trajectory</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section" data-section="signals">
+      <div class="section-header">
+        <span class="section-title">
+          <span class="section-icon">📰</span>
+          Recent News & Signals
+        </span>
+        <span class="expand-icon">▼</span>
+      </div>
+      <div class="section-content">
+        <ul class="checklist" id="signals-checklist">
+          <li>
+            <span class="checkbox" data-item="press"></span>
+            <span>Press releases</span>
+          </li>
+          <li>
+            <span class="checkbox" data-item="leadership"></span>
+            <span>Leadership changes</span>
+          </li>
+          <li>
+            <span class="checkbox" data-item="launches"></span>
+            <span>Product launches</span>
+          </li>
+          <li>
+            <span class="checkbox" data-item="hiring"></span>
+            <span>Hiring trends</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section" data-section="pain">
+      <div class="section-header">
+        <span class="section-title">
+          <span class="section-icon">🎯</span>
+          Pain Points
+        </span>
+        <span class="expand-icon">▼</span>
+      </div>
+      <div class="section-content">
+        <ul class="checklist" id="pain-checklist">
+          <li>
+            <span class="checkbox" data-item="challenges"></span>
+            <span>Industry challenges</span>
+          </li>
+          <li>
+            <span class="checkbox" data-item="reviews"></span>
+            <span>Glassdoor/review insights</span>
+          </li>
+          <li>
+            <span class="checkbox" data-item="jobs"></span>
+            <span>Job posting gaps</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section" data-section="tech">
+      <div class="section-header">
+        <span class="section-title">
+          <span class="section-icon">💻</span>
+          Technology Stack
+        </span>
+        <span class="expand-icon">▼</span>
+      </div>
+      <div class="section-content">
+        <ul class="checklist" id="tech-checklist">
+          <li>
+            <span class="checkbox" data-item="builtwith"></span>
+            <span>BuiltWith/Wappalyzer check</span>
+          </li>
+          <li>
+            <span class="checkbox" data-item="integrations"></span>
+            <span>Advertised integrations</span>
+          </li>
+          <li>
+            <span class="checkbox" data-item="techreq"></span>
+            <span>Job posting tech requirements</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section" data-section="stakeholders">
+      <div class="section-header">
+        <span class="section-title">
+          <span class="section-icon">👥</span>
+          Key Stakeholders
+        </span>
+        <span class="expand-icon">▼</span>
+      </div>
+      <div class="section-content">
+        <ul class="checklist" id="stakeholders-checklist">
+          <li>
+            <span class="checkbox" data-item="execs"></span>
+            <span>Executive team</span>
+          </li>
+          <li>
+            <span class="checkbox" data-item="dept"></span>
+            <span>Department heads</span>
+          </li>
+          <li>
+            <span class="checkbox" data-item="newhires"></span>
+            <span>Recent hires</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="action-items">
+      <h3>Action Items</h3>
+      <ol id="action-list">
+        <li>Search "[Company] news" for recent signals</li>
+        <li>Check their LinkedIn company page</li>
+        <li>Review their careers page</li>
+        <li>Look up key contacts on LinkedIn</li>
+        <li>Check G2/Capterra for reviews</li>
+      </ol>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="copy-btn">Copy Research</button>
+      <button class="btn btn-secondary" id="draft-btn">Draft Outreach</button>
+    </div>
+  </div>
+
+  <div class="copied" id="copied-toast">Copied to clipboard!</div>
+
+  <script>
+    // State
+    let researchData = {
+      companyName: '',
+      industry: '',
+      content: ''
+    };
+
+    // DOM elements
+    const logo = document.getElementById('logo');
+    const companyName = document.getElementById('company-name');
+    const industry = document.getElementById('industry');
+    const copyBtn = document.getElementById('copy-btn');
+    const draftBtn = document.getElementById('draft-btn');
+    const copiedToast = document.getElementById('copied-toast');
+
+    // Toggle sections
+    document.querySelectorAll('.section-header').forEach(header => {
+      header.addEventListener('click', () => {
+        header.parentElement.classList.toggle('expanded');
+      });
+    });
+
+    // Toggle checkboxes
+    document.querySelectorAll('.checkbox').forEach(checkbox => {
+      checkbox.addEventListener('click', () => {
+        checkbox.classList.toggle('checked');
+      });
+    });
+
+    // Get initials
+    function getInitials(name) {
+      return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    }
+
+    // Update display
+    function updateDisplay() {
+      companyName.textContent = researchData.companyName;
+      logo.textContent = getInitials(researchData.companyName);
+      industry.textContent = researchData.industry || 'Industry';
+    }
+
+    // Copy button
+    copyBtn.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(researchData.content);
+      copiedToast.classList.add('show');
+      setTimeout(() => copiedToast.classList.remove('show'), 2000);
+    });
+
+    // Draft outreach button
+    draftBtn.addEventListener('click', () => {
+      window.parent.postMessage({
+        jsonrpc: '2.0',
+        method: 'tools/call',
+        params: {
+          name: 'draft_cold_email',
+          arguments: {
+            company: researchData.companyName,
+            painPoint: 'Based on research',
+            additionalContext: `Research completed for ${researchData.companyName}. Use the findings to draft a personalized cold email.`
+          }
+        },
+        id: Date.now()
+      }, '*');
+    });
+
+    // Listen for messages
+    window.addEventListener('message', (event) => {
+      const data = event.data;
+
+      if (data.type === 'tool_result') {
+        const content = data.content;
+        researchData.companyName = content.companyName || 'Company';
+        researchData.industry = content.industry || '';
+        researchData.content = content.text || '';
+        updateDisplay();
+      }
+    });
+
+    // Request initial data
+    window.parent.postMessage({
+      jsonrpc: '2.0',
+      method: 'ui/ready',
+      id: Date.now()
+    }, '*');
+  </script>
+</body>
+</html>

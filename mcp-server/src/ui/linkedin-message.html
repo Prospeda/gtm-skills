@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkedIn Message</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #18181b;
+      color: #fafafa;
+      padding: 16px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #27272a;
+    }
+
+    .header h1 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0077b5;
+    }
+
+    .badge {
+      background: #0077b520;
+      color: #0077b5;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .profile-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #27272a;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0077b5, #00a0dc);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 600;
+      color: white;
+    }
+
+    .profile-info h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .profile-info p {
+      font-size: 12px;
+      color: #71717a;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      background: #27272a;
+      border: 1px solid #3f3f46;
+      color: #a1a1aa;
+      font-size: 12px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .tab:hover {
+      background: #3f3f46;
+    }
+
+    .tab.active {
+      background: #0077b520;
+      border-color: #0077b5;
+      color: #0077b5;
+    }
+
+    .message-card {
+      background: #27272a;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .message-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid #3f3f46;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .message-type {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .char-count {
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: #18181b;
+    }
+
+    .char-count.warning {
+      color: #f59e0b;
+    }
+
+    .char-count.error {
+      color: #ef4444;
+    }
+
+    .char-count.ok {
+      color: #22c55e;
+    }
+
+    .message-body {
+      padding: 16px;
+      font-size: 14px;
+      color: #d4d4d8;
+      white-space: pre-wrap;
+      min-height: 120px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      background: #18181b;
+      border-top: 1px solid #3f3f46;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: #0077b5;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #006097;
+    }
+
+    .btn-secondary {
+      background: #3f3f46;
+      color: #fafafa;
+    }
+
+    .btn-secondary:hover {
+      background: #52525b;
+    }
+
+    .tips {
+      background: #0077b510;
+      border: 1px solid #0077b530;
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .tips h3 {
+      font-size: 12px;
+      color: #0077b5;
+      margin-bottom: 8px;
+    }
+
+    .tips ul {
+      font-size: 12px;
+      color: #a1a1aa;
+      padding-left: 16px;
+    }
+
+    .tips li {
+      margin-bottom: 4px;
+    }
+
+    .copied {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #22c55e;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .copied.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>LinkedIn Message</h1>
+      <span class="badge" id="type-badge">Connection</span>
+    </div>
+
+    <div class="profile-card">
+      <div class="avatar" id="avatar">JD</div>
+      <div class="profile-info">
+        <h3 id="recipient-name">John Doe</h3>
+        <p id="recipient-title">VP of Sales at Company</p>
+      </div>
+    </div>
+
+    <div class="tabs" id="version-tabs">
+      <button class="tab active" data-version="1">Shared Interest</button>
+      <button class="tab" data-version="2">Mutual Connection</button>
+      <button class="tab" data-version="3">Value-First</button>
+    </div>
+
+    <div class="message-card">
+      <div class="message-header">
+        <span class="message-type" id="message-type">Connection Request</span>
+        <span class="char-count ok" id="char-count">0 / 300</span>
+      </div>
+      <div class="message-body" id="message-body">Loading message...</div>
+      <div class="actions">
+        <button class="btn btn-primary" id="copy-btn">Copy Message</button>
+        <button class="btn btn-secondary" id="shorten-btn">Make Shorter</button>
+      </div>
+    </div>
+
+    <div class="tips">
+      <h3>LinkedIn Best Practices</h3>
+      <ul>
+        <li>Connection requests: Keep under 200 chars</li>
+        <li>Don't pitch in the connection request</li>
+        <li>Send 8-10am their time, Tue-Thu</li>
+        <li>Reference something specific about them</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="copied" id="copied-toast">Copied to clipboard!</div>
+
+  <script>
+    // State
+    let messageData = {
+      recipient: { name: '', title: '', company: '' },
+      messageType: 'connection_request',
+      versions: [],
+      currentVersion: 0
+    };
+
+    // DOM elements
+    const avatar = document.getElementById('avatar');
+    const recipientName = document.getElementById('recipient-name');
+    const recipientTitle = document.getElementById('recipient-title');
+    const typeBadge = document.getElementById('type-badge');
+    const messageType = document.getElementById('message-type');
+    const charCount = document.getElementById('char-count');
+    const messageBody = document.getElementById('message-body');
+    const tabs = document.getElementById('version-tabs');
+    const copyBtn = document.getElementById('copy-btn');
+    const shortenBtn = document.getElementById('shorten-btn');
+    const copiedToast = document.getElementById('copied-toast');
+
+    // Get initials
+    function getInitials(name) {
+      return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    }
+
+    // Get char limit based on message type
+    function getCharLimit() {
+      return messageData.messageType === 'connection_request' ? 300 : 1000;
+    }
+
+    // Update character count
+    function updateCharCount(text) {
+      const limit = getCharLimit();
+      const count = text.length;
+      charCount.textContent = `${count} / ${limit}`;
+
+      charCount.classList.remove('ok', 'warning', 'error');
+      if (count > limit) {
+        charCount.classList.add('error');
+      } else if (count > limit * 0.8) {
+        charCount.classList.add('warning');
+      } else {
+        charCount.classList.add('ok');
+      }
+    }
+
+    // Parse message content
+    function parseMessageContent(markdown) {
+      const versions = [];
+      const versionRegex = /## Version \d+: ([^\n]+)\n([^#]*?)(?=---|\n## |$)/g;
+
+      let match;
+      while ((match = versionRegex.exec(markdown)) !== null) {
+        versions.push({
+          name: match[1].trim(),
+          body: match[2].trim().replace(/\(~\d+ chars\)/g, '').trim()
+        });
+      }
+
+      return versions;
+    }
+
+    // Update display
+    function updateDisplay() {
+      const version = messageData.versions[messageData.currentVersion];
+      if (version) {
+        messageBody.textContent = version.body;
+        updateCharCount(version.body);
+      }
+
+      // Update recipient
+      recipientName.textContent = messageData.recipient.name;
+      recipientTitle.textContent = `${messageData.recipient.title} at ${messageData.recipient.company}`;
+      avatar.textContent = getInitials(messageData.recipient.name);
+
+      // Update type
+      const typeLabels = {
+        connection_request: 'Connection Request',
+        inmail: 'InMail',
+        follow_up: 'Follow-Up'
+      };
+      typeBadge.textContent = typeLabels[messageData.messageType] || 'Message';
+      messageType.textContent = typeLabels[messageData.messageType] || 'Message';
+
+      // Update tabs
+      tabs.querySelectorAll('.tab').forEach((tab, index) => {
+        tab.classList.toggle('active', index === messageData.currentVersion);
+        if (messageData.versions[index]) {
+          tab.textContent = messageData.versions[index].name;
+        }
+      });
+    }
+
+    // Tab click handler
+    tabs.addEventListener('click', (e) => {
+      if (e.target.classList.contains('tab')) {
+        const version = parseInt(e.target.dataset.version) - 1;
+        if (version >= 0 && version < messageData.versions.length) {
+          messageData.currentVersion = version;
+          updateDisplay();
+        }
+      }
+    });
+
+    // Copy button
+    copyBtn.addEventListener('click', async () => {
+      const version = messageData.versions[messageData.currentVersion];
+      if (version) {
+        await navigator.clipboard.writeText(version.body);
+        copiedToast.classList.add('show');
+        setTimeout(() => copiedToast.classList.remove('show'), 2000);
+      }
+    });
+
+    // Shorten button
+    shortenBtn.addEventListener('click', () => {
+      window.parent.postMessage({
+        jsonrpc: '2.0',
+        method: 'tools/call',
+        params: {
+          name: 'draft_linkedin_message',
+          arguments: {
+            ...messageData.originalArgs,
+            additionalContext: 'Make this shorter while keeping the key message. Target under 150 characters.'
+          }
+        },
+        id: Date.now()
+      }, '*');
+    });
+
+    // Listen for messages from host
+    window.addEventListener('message', (event) => {
+      const data = event.data;
+
+      if (data.type === 'tool_result') {
+        const content = data.content;
+
+        messageData.versions = parseMessageContent(content.text);
+        messageData.recipient = {
+          name: content.recipientName || 'Unknown',
+          title: content.recipientTitle || '',
+          company: content.company || ''
+        };
+        messageData.messageType = content.messageType || 'connection_request';
+        messageData.originalArgs = content.args;
+
+        updateDisplay();
+      }
+    });
+
+    // Request initial data
+    window.parent.postMessage({
+      jsonrpc: '2.0',
+      method: 'ui/ready',
+      id: Date.now()
+    }, '*');
+  </script>
+</body>
+</html>

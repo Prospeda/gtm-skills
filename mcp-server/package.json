@@ -1,0 +1,27 @@
+{
+  "name": "gtm-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP Server with GTM tools for sales and marketing",
+  "main": "dist/index.js",
+  "type": "module",
+  "bin": {
+    "gtm-mcp-server": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "keywords": ["mcp", "gtm", "sales", "marketing", "claude"],
+  "author": "Prospeda",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.3",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.10",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

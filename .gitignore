@@ -20,6 +20,8 @@ Thumbs.db
 dist/
 build/
 out/
+.next/
+.vercel/
 
 # Logs
 *.log

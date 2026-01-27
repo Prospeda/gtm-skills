@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Objection Handler</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #18181b;
+      color: #fafafa;
+      padding: 16px;
+      line-height: 1.5;
+    }
+    .container { max-width: 600px; margin: 0 auto; }
+    .header {
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #27272a;
+    }
+    .header h1 { font-size: 18px; font-weight: 600; color: #f97316; margin-bottom: 8px; }
+    .objection-quote {
+      background: #27272a;
+      border-left: 3px solid #f97316;
+      padding: 12px 16px;
+      font-style: italic;
+      color: #d4d4d8;
+      font-size: 14px;
+    }
+    .steps {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+    .step {
+      padding: 8px 16px;
+      border-radius: 20px;
+      background: #27272a;
+      border: 1px solid #3f3f46;
+      color: #71717a;
+      font-size: 12px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .step:hover { background: #3f3f46; }
+    .step.active { background: #f9731620; border-color: #f97316; color: #f97316; }
+    .step-number {
+      display: inline-flex;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #3f3f46;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      margin-right: 6px;
+    }
+    .step.active .step-number { background: #f97316; color: white; }
+    .response-card {
+      background: #27272a;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .response-card h3 { font-size: 14px; color: #f97316; margin-bottom: 12px; }
+    .response-content { font-size: 14px; color: #d4d4d8; white-space: pre-wrap; }
+    .response-content p { margin-bottom: 12px; }
+    .response-content ul { padding-left: 20px; margin-bottom: 12px; }
+    .response-content li { margin-bottom: 6px; }
+    .example-box {
+      background: #18181b;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 12px;
+      font-size: 13px;
+      color: #a1a1aa;
+    }
+    .example-box strong { color: #fafafa; }
+    .donts {
+      background: #ef444410;
+      border: 1px solid #ef444430;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+    .donts h3 { font-size: 13px; color: #ef4444; margin-bottom: 10px; }
+    .donts ul { font-size: 12px; color: #a1a1aa; padding-left: 16px; }
+    .donts li { margin-bottom: 4px; }
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .btn {
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      flex: 1;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: linear-gradient(135deg, #f97316, #ef4444); color: white; }
+    .btn-secondary { background: #3f3f46; color: #fafafa; }
+    .copied {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #22c55e;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .copied.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Objection Response Framework</h1>
+      <div class="objection-quote" id="objection">"Loading objection..."</div>
+    </div>
+
+    <div class="steps" id="steps">
+      <button class="step active" data-step="1"><span class="step-number">1</span>Acknowledge</button>
+      <button class="step" data-step="2"><span class="step-number">2</span>Clarify</button>
+      <button class="step" data-step="3"><span class="step-number">3</span>Reframe</button>
+      <button class="step" data-step="4"><span class="step-number">4</span>If Blocked</button>
+    </div>
+
+    <div class="response-card">
+      <h3 id="step-title">Step 1: Acknowledge & Empathize</h3>
+      <div class="response-content" id="step-content">
+        <p>Don't dismiss their concern. Show you understand:</p>
+        <div class="example-box">
+          <strong>Example:</strong> "I appreciate you sharing that. [EMPATHETIC STATEMENT ABOUT THEIR CONCERN]."
+        </div>
+      </div>
+    </div>
+
+    <div class="donts">
+      <h3>What NOT to Do</h3>
+      <ul>
+        <li>Don't argue or get defensive</li>
+        <li>Don't dismiss their concern</li>
+        <li>Don't immediately pitch harder</li>
+        <li>Don't bad-mouth competitors</li>
+        <li>Don't promise things you can't deliver</li>
+      </ul>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="copy-btn">Copy Response</button>
+      <button class="btn btn-secondary" id="practice-btn">Practice Roleplay</button>
+    </div>
+  </div>
+
+  <div class="copied" id="copied-toast">Copied to clipboard!</div>
+
+  <script>
+    let objectionData = { objection: '', steps: [], currentStep: 0, content: '' };
+
+    const objectionEl = document.getElementById('objection');
+    const stepsEl = document.getElementById('steps');
+    const stepTitle = document.getElementById('step-title');
+    const stepContent = document.getElementById('step-content');
+    const copyBtn = document.getElementById('copy-btn');
+    const practiceBtn = document.getElementById('practice-btn');
+    const copiedToast = document.getElementById('copied-toast');
+
+    const defaultSteps = [
+      { title: 'Step 1: Acknowledge & Empathize', content: '<p>Don\'t dismiss their concern. Show you understand:</p><div class="example-box"><strong>Example:</strong> "I appreciate you sharing that. [EMPATHETIC STATEMENT ABOUT THEIR CONCERN]."</div>' },
+      { title: 'Step 2: Clarifying Questions', content: '<p>Before responding, understand better:</p><ul><li>"Help me understand - what\'s driving that concern?"</li><li>"What would need to be true for this to not be a concern?"</li><li>"Is this the main thing holding you back?"</li></ul>' },
+      { title: 'Step 3: Reframe Response', content: '<p><strong>Direct Response:</strong> "What I\'m hearing is [THEIR CONCERN]. Here\'s how other customers have thought about it..."</p><p><strong>Proof Point:</strong> "[SIMILAR CUSTOMER] had the same concern. Here\'s what they found..."</p>' },
+      { title: 'Step 4: If It\'s a Real Block', content: '<p>Sometimes objections are valid. If this is genuinely not a fit:</p><div class="example-box">"It sounds like the timing/fit isn\'t right. I\'d rather be upfront about that than waste your time. Would it make sense to revisit later?"</div>' }
+    ];
+
+    function updateDisplay() {
+      objectionEl.textContent = `"${objectionData.objection}"`;
+      const step = objectionData.steps[objectionData.currentStep] || defaultSteps[objectionData.currentStep];
+      if (step) {
+        stepTitle.textContent = step.title;
+        stepContent.innerHTML = step.content;
+      }
+      stepsEl.querySelectorAll('.step').forEach((btn, i) => {
+        btn.classList.toggle('active', i === objectionData.currentStep);
+      });
+    }
+
+    stepsEl.addEventListener('click', (e) => {
+      const btn = e.target.closest('.step');
+      if (btn) {
+        objectionData.currentStep = parseInt(btn.dataset.step) - 1;
+        updateDisplay();
+      }
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(objectionData.content);
+      copiedToast.classList.add('show');
+      setTimeout(() => copiedToast.classList.remove('show'), 2000);
+    });
+
+    practiceBtn.addEventListener('click', () => {
+      window.parent.postMessage({
+        jsonrpc: '2.0',
+        method: 'tools/call',
+        params: {
+          name: 'handle_objection',
+          arguments: {
+            objection: objectionData.objection,
+            additionalContext: 'Create a roleplay scenario where I can practice handling this objection.'
+          }
+        },
+        id: Date.now()
+      }, '*');
+    });
+
+    window.addEventListener('message', (event) => {
+      if (event.data.type === 'tool_result') {
+        const c = event.data.content;
+        objectionData.objection = c.objection || 'Unknown objection';
+        objectionData.content = c.text || '';
+        objectionData.steps = defaultSteps;
+        updateDisplay();
+      }
+    });
+
+    window.parent.postMessage({ jsonrpc: '2.0', method: 'ui/ready', id: Date.now() }, '*');
+  </script>
+</body>
+</html>

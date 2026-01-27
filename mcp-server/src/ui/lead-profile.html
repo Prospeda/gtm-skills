@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lead Profile</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #18181b;
+      color: #fafafa;
+      padding: 16px;
+      line-height: 1.5;
+    }
+    .container { max-width: 500px; margin: 0 auto; }
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding: 20px;
+      background: #27272a;
+      border-radius: 12px;
+    }
+    .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0077b5, #00a0dc);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 700;
+      color: white;
+    }
+    .profile-info h1 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+    .profile-info .title { font-size: 14px; color: #a1a1aa; margin-bottom: 8px; }
+    .social-links { display: flex; gap: 8px; }
+    .social-link {
+      padding: 6px 12px;
+      background: #3f3f46;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #a1a1aa;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .social-link:hover { background: #52525b; color: #fafafa; }
+    .section {
+      background: #27272a;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .section h3 {
+      font-size: 13px;
+      color: #71717a;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .checklist { list-style: none; }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid #3f3f46;
+      font-size: 13px;
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .checkbox {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #52525b;
+      border-radius: 4px;
+      flex-shrink: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .checkbox.checked { background: #22c55e; border-color: #22c55e; }
+    .checkbox.checked::after { content: '✓'; color: white; font-size: 12px; }
+    .hooks {
+      background: #8b5cf610;
+      border: 1px solid #8b5cf630;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+    .hooks h3 { font-size: 14px; color: #8b5cf6; margin-bottom: 12px; }
+    .hooks ul { font-size: 13px; color: #a1a1aa; padding-left: 20px; }
+    .hooks li { margin-bottom: 8px; }
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .btn {
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      flex: 1;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: #0077b5; color: white; }
+    .btn-secondary { background: #3f3f46; color: #fafafa; }
+    .copied {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #22c55e;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .copied.show { opacity: 1; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="profile-header">
+      <div class="avatar" id="avatar">JD</div>
+      <div class="profile-info">
+        <h1 id="name">John Doe</h1>
+        <p class="title" id="title">VP of Sales at Company</p>
+        <div class="social-links">
+          <a href="#" class="social-link" id="linkedin-link">LinkedIn</a>
+          <a href="#" class="social-link" id="email-link">Email</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Professional Background</h3>
+      <ul class="checklist">
+        <li><span class="checkbox"></span><span>Current role and tenure</span></li>
+        <li><span class="checkbox"></span><span>Previous companies</span></li>
+        <li><span class="checkbox"></span><span>Career progression</span></li>
+        <li><span class="checkbox"></span><span>Education</span></li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h3>LinkedIn Activity</h3>
+      <ul class="checklist">
+        <li><span class="checkbox"></span><span>Recent posts/articles</span></li>
+        <li><span class="checkbox"></span><span>Content themes</span></li>
+        <li><span class="checkbox"></span><span>Groups membership</span></li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h3>Connections</h3>
+      <ul class="checklist">
+        <li><span class="checkbox"></span><span>Mutual connections</span></li>
+        <li><span class="checkbox"></span><span>Alumni network</span></li>
+        <li><span class="checkbox"></span><span>Industry peers</span></li>
+      </ul>
+    </div>
+
+    <div class="hooks">
+      <h3>Personalization Hooks</h3>
+      <ul id="hooks-list">
+        <li>Reference their recent post/content</li>
+        <li>Mention mutual connection</li>
+        <li>Congratulate on company news</li>
+        <li>Industry trend relevant to their role</li>
+      </ul>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="copy-btn">Copy Profile</button>
+      <button class="btn btn-secondary" id="connect-btn">Draft Connection</button>
+    </div>
+  </div>
+
+  <div class="copied" id="copied-toast">Copied to clipboard!</div>
+
+  <script>
+    let leadData = { name: '', title: '', company: '', content: '' };
+
+    const avatar = document.getElementById('avatar');
+    const nameEl = document.getElementById('name');
+    const titleEl = document.getElementById('title');
+    const copyBtn = document.getElementById('copy-btn');
+    const connectBtn = document.getElementById('connect-btn');
+    const copiedToast = document.getElementById('copied-toast');
+
+    function getInitials(name) {
+      return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    }
+
+    function updateDisplay() {
+      nameEl.textContent = leadData.name;
+      titleEl.textContent = `${leadData.title} at ${leadData.company}`;
+      avatar.textContent = getInitials(leadData.name);
+    }
+
+    document.querySelectorAll('.checkbox').forEach(cb => {
+      cb.addEventListener('click', () => cb.classList.toggle('checked'));
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(leadData.content);
+      copiedToast.classList.add('show');
+      setTimeout(() => copiedToast.classList.remove('show'), 2000);
+    });
+
+    connectBtn.addEventListener('click', () => {
+      window.parent.postMessage({
+        jsonrpc: '2.0',
+        method: 'tools/call',
+        params: {
+          name: 'draft_linkedin_message',
+          arguments: {
+            recipientName: leadData.name,
+            recipientTitle: leadData.title,
+            company: leadData.company,
+            messageType: 'connection_request'
+          }
+        },
+        id: Date.now()
+      }, '*');
+    });
+
+    window.addEventListener('message', (event) => {
+      if (event.data.type === 'tool_result') {
+        const c = event.data.content;
+        leadData = { name: c.name || '', title: c.title || '', company: c.company || '', content: c.text || '' };
+        updateDisplay();
+      }
+    });
+
+    window.parent.postMessage({ jsonrpc: '2.0', method: 'ui/ready', id: Date.now() }, '*');
+  </script>
+</body>
+</html>
