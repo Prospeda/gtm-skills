@@ -209,6 +209,62 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Tonalities Showcase - Hero Follow */}
+      <section className="py-16 md:py-20 bg-gradient-to-br from-purple-500/10 via-pink-500/5 to-transparent border-y border-purple-500/20">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-10">
+            <Badge variant="outline" className="mb-4 border-purple-500/30 text-purple-400">
+              <Sparkles className="h-3 w-3 mr-1" />
+              24 Writing Styles
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-3">
+              Write Like the Masters
+            </h2>
+            <p className="text-muted-foreground max-w-xl mx-auto">
+              Adopt the voice of legendary communicators. One prompt transforms your sales copy instantly.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-9 gap-3 max-w-5xl mx-auto mb-8">
+            {[
+              { name: 'Jobs', emoji: '🍎', style: 'Vision' },
+              { name: 'Bezos', emoji: '📦', style: 'Customer' },
+              { name: 'Voss', emoji: '🎯', style: 'Empathy' },
+              { name: 'Hormozi', emoji: '💰', style: 'Value' },
+              { name: 'Hemingway', emoji: '✍️', style: 'Sparse' },
+              { name: 'Ogilvy', emoji: '📰', style: 'Direct' },
+              { name: 'Buffett', emoji: '📈', style: 'Folksy' },
+              { name: 'Naval', emoji: '🧠', style: 'Principles' },
+              { name: 'Godin', emoji: '🟣', style: 'Remarkable' },
+            ].map((tonality) => (
+              <Link
+                key={tonality.name}
+                href="/free-tools/tonalities"
+                className="bg-zinc-900/70 border border-zinc-800 rounded-xl p-3 hover:border-purple-500/50 hover:bg-purple-500/5 transition-all group text-center"
+              >
+                <div className="text-2xl mb-1">{tonality.emoji}</div>
+                <div className="font-semibold text-sm text-zinc-200 group-hover:text-purple-400 transition-colors">
+                  {tonality.name}
+                </div>
+                <div className="text-[10px] text-zinc-500">{tonality.style}</div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="text-center">
+            <Link href="/free-tools/tonalities">
+              <Button className="gap-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
+                Explore All 24 Styles
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+            <p className="text-xs text-zinc-500 mt-3">
+              + MEDDIC, SPIN, Challenger, Sandler & 15 more methodologies
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* Social Proof Banner */}
       <section className="py-4 bg-zinc-900/50 border-y border-zinc-800">
         <div className="max-w-7xl mx-auto px-6">

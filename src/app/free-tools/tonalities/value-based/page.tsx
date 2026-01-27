@@ -4,8 +4,6 @@ import { Badge } from '@/components/ui/badge';
 import { CopyButton } from '@/components/copy-button';
 import { ArrowRight, DollarSign } from 'lucide-react';
 import type { Metadata } from 'next';
-import { Header } from '@/components/header';
-
 export const metadata: Metadata = {
   title: 'Value-Based Selling | ROI-Focused Sales Writing | Free GTM Prompts',
   description: 'Master value-based selling. Quantify ROI, build business cases, speak the language of finance. Free prompts for Claude & ChatGPT.',
@@ -147,7 +145,6 @@ const relatedTonalities = [
 export default function ValueBasedTonalityPage() {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
 
       <main className="max-w-4xl mx-auto px-6 py-16">
         {/* Hero */}
@@ -340,14 +337,14 @@ export default function ValueBasedTonalityPage() {
         {/* CTA */}
         <div className="bg-gradient-to-r from-orange-600 to-red-600 rounded-2xl p-8 text-center">
           <h2 className="text-2xl font-bold text-white mb-4">
-            Let Prospeda build value-based outreach for you
+            Need a fully agentic sales team?
           </h2>
           <p className="text-orange-100 mb-6 max-w-xl mx-auto">
-            AI research + human review. 50-100 qualified leads monthly with quantified value.
+            Prospeda is an AI BDR that runs these workflows for you—research, outreach, and follow-up on autopilot.
           </p>
-          <a href="https://buy.stripe.com/6oU5kD0VN5BLggqeS193y01">
+          <a href="https://prospeda.com" target="_blank" rel="noopener noreferrer">
             <Button size="lg" className="bg-white text-teal-700 hover:bg-zinc-100">
-              Get Started — $2,500/mo
+              Learn About Prospeda
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </a>

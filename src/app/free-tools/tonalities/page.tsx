@@ -3,8 +3,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ArrowRight, Zap, Target, MessageSquare, FileText, Flame, Swords, DollarSign, Users, Search, ClipboardCheck, HelpCircle, Lightbulb, Scale, TrendingUp, Compass, PenTool, RotateCcw, GitCompare, ShieldOff, Crosshair, Repeat, Building2, RotateCw, Lock } from 'lucide-react';
 import type { Metadata } from 'next';
-import { Header } from '@/components/header';
-
 export const metadata: Metadata = {
   title: 'GTM Tonality Skills | 24 Sales Writing Styles & Methodologies',
   description: 'Master 24 battle-tested writing styles for sales. Jobs, Bezos, Voss, Hormozi, Naval, Ogilvy plus SPIN, Gap, Sandler, and more. Free + Premium prompts.',
@@ -264,7 +262,6 @@ const situationTable = [
 export default function TonalitiesPage() {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
 
       <main className="max-w-6xl mx-auto px-6 py-16">
         {/* Hero */}
@@ -426,14 +423,14 @@ export default function TonalitiesPage() {
         {/* CTA */}
         <div className="bg-gradient-to-r from-orange-600 to-red-600 rounded-2xl p-8 md:p-12 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
-            Want AI that writes in these styles automatically?
+            Need a fully agentic sales team?
           </h2>
           <p className="text-orange-100 mb-6 max-w-xl mx-auto">
-            Prospeda generates personalized outreach in any tonality. AI research + human review. Your voice, amplified.
+            Prospeda is an AI BDR that runs these workflows for you—research, outreach, and follow-up on autopilot.
           </p>
-          <a href="https://buy.stripe.com/6oU5kD0VN5BLggqeS193y01">
+          <a href="https://prospeda.com" target="_blank" rel="noopener noreferrer">
             <Button size="lg" className="bg-white text-teal-700 hover:bg-zinc-100">
-              Get Started — $2,500/mo
+              Learn About Prospeda
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </a>
