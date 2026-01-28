@@ -2,6 +2,9 @@ import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
+// Revalidate OG image every hour to help with social media cache refresh
+export const revalidate = 3600;
+
 export const alt = 'GTM Skills - 2,500+ AI Prompts for B2B Sales';
 export const size = {
   width: 1200,

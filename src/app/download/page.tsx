@@ -175,15 +175,15 @@ export default function DownloadPage() {
         {/* CTA */}
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">
-            Want AI That Runs These Prompts?
+            Looking for a Complete Agentic Solution?
           </h2>
           <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
-            Prospeda is an AI sales team that automates prospecting, research,
-            and personalized outreach using these prompts.
+            Prospeda turns these prompts into autonomous workflows—research,
+            personalization, and outbound execution with human oversight.
           </p>
-          <a href="https://github.com/Prospeda/gtm-skills" target="_blank" rel="noopener noreferrer">
+          <a href="https://prospeda.com" target="_blank" rel="noopener noreferrer">
             <Button className="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600">
-              Try Prospeda Free
+              Explore Prospeda
             </Button>
           </a>
         </div>
