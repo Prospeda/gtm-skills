@@ -3,20 +3,20 @@
 /**
  * GTM Skills Distribution Script
  *
- * Safely push content to social via Buffer API.
+ * Preview and prepare content for Buffer GUI.
+ * Copy output → Paste into publish.buffer.com
  *
  * Usage:
- *   node scripts/distribute.js --list
- *   node scripts/distribute.js --preview twitter 1
- *   node scripts/distribute.js --schedule twitter 1 --time "tomorrow 9am"
- *   node scripts/distribute.js --schedule linkedin 1 --time "tomorrow 6:30am"
- *   node scripts/distribute.js --enhance twitter 1
- *   node scripts/distribute.js --buffer-status
+ *   node scripts/distribute.js --list              # See all drafts
+ *   node scripts/distribute.js --preview twitter 1 # Preview draft (copy-ready)
+ *   node scripts/distribute.js --enhance twitter 1 # Get enhancer prompts
+ *   node scripts/distribute.js --copy twitter 1    # Output raw content to copy
  *
  * IMPORTANT: LinkedIn is BLOCKED during work hours (8am-5:30pm EST)
+ *
+ * STATUS: Buffer API deprecated. Using GUI workflow.
+ * FUTURE: Twitter API, LinkedIn API direct integration
  */
-
-const https = require('https');
 
 // ============================================
 // CONFIGURATION
@@ -632,28 +632,71 @@ ${content}
 
 function showHelp() {
   console.log(`
-GTM Skills Distribution
+GTM Skills Distribution (Buffer GUI Workflow)
 
 Usage:
-  node distribute.js --list                      Show all drafts
-  node distribute.js --preview twitter 1         Preview a draft
-  node distribute.js --schedule twitter 1        Schedule via Buffer
-  node distribute.js --schedule linkedin 1 --time "2024-01-30T06:30:00"
-  node distribute.js --enhance twitter 1         Get enhancer prompts
-  node distribute.js --buffer-status             Check Buffer queue
+  node distribute.js --list                Show all drafts
+  node distribute.js --preview twitter 1   Preview a draft (formatted)
+  node distribute.js --copy twitter 1      Raw content to copy/paste
+  node distribute.js --enhance twitter 1   Get enhancer prompts
 
-Options:
-  --list              Show all available drafts
-  --preview <p> <n>   Preview platform draft number
-  --schedule <p> <n>  Schedule to Buffer
-  --time <datetime>   Specific time (ISO format)
-  --enhance <p> <n>   Show enhancer prompts for draft
-  --buffer-status     Check what's scheduled
+Workflow:
+  1. Preview draft with --preview
+  2. Copy content (or use --copy for raw output)
+  3. Paste into publish.buffer.com
+  4. Schedule and post!
 
-LinkedIn Restriction:
-  Posts BLOCKED during 8:00 AM - 5:30 PM EST
-  Allowed: 6:00-7:45 AM or 5:45-9:00 PM EST
+LinkedIn Timing (ENFORCED):
+  🚫 BLOCKED: 8:00 AM - 5:30 PM EST
+  ✅ ALLOWED: 6:00-7:45 AM or 5:45-9:00 PM EST
+
+Status:
+  Buffer API deprecated - using GUI workflow
+  Future: Direct Twitter/LinkedIn API integration
   `);
+}
+
+function copyDraft(platform, draftNum) {
+  const draft = DRAFTS[platform]?.[draftNum];
+
+  if (!draft) {
+    console.log(`\n❌ Draft not found: ${platform} #${draftNum}\n`);
+    return;
+  }
+
+  // LinkedIn timing warning
+  if (platform === 'linkedin') {
+    const validation = validateLinkedInTiming();
+    if (!validation.valid) {
+      console.log('\n⚠️  REMINDER: ' + validation.message.split('\n')[0]);
+      console.log('   Schedule for 6:30 AM or 6:00 PM EST\n');
+    }
+  }
+
+  console.log('\n' + '═'.repeat(60));
+  console.log(`📋 COPY THIS → paste into Buffer`);
+  console.log('═'.repeat(60) + '\n');
+
+  if (draft.thread) {
+    console.log('=== TWEET 1 (Post this first) ===\n');
+    console.log(draft.thread[0]);
+    console.log('\n=== REMAINING TWEETS (Add to thread) ===\n');
+    draft.thread.slice(1).forEach((tweet, i) => {
+      console.log(`--- Tweet ${i + 2} ---`);
+      console.log(tweet);
+      console.log('');
+    });
+  } else {
+    if (draft.title) {
+      console.log(`TITLE: ${draft.title}\n`);
+      console.log('BODY:\n');
+    }
+    console.log(draft.content);
+  }
+
+  console.log('\n' + '═'.repeat(60));
+  console.log('Next: Paste into publish.buffer.com → Schedule');
+  console.log('═'.repeat(60) + '\n');
 }
 
 async function main() {
@@ -669,11 +712,6 @@ async function main() {
     return;
   }
 
-  if (args.includes('--buffer-status')) {
-    await checkBufferStatus();
-    return;
-  }
-
   if (args.includes('--preview')) {
     const idx = args.indexOf('--preview');
     const platform = args[idx + 1];
@@ -682,13 +720,11 @@ async function main() {
     return;
   }
 
-  if (args.includes('--schedule')) {
-    const idx = args.indexOf('--schedule');
+  if (args.includes('--copy')) {
+    const idx = args.indexOf('--copy');
     const platform = args[idx + 1];
     const draftNum = parseInt(args[idx + 2]);
-    const timeIdx = args.indexOf('--time');
-    const timeStr = timeIdx !== -1 ? args[timeIdx + 1] : null;
-    await scheduleDraft(platform, draftNum, timeStr);
+    copyDraft(platform, draftNum);
     return;
   }
 

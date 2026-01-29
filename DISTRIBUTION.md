@@ -1,17 +1,48 @@
 # GTM Skills Distribution Workflow
 
 ## Quick Start
+
 ```bash
-# Option 1: Buffer (GUI)
-# Open https://publish.buffer.com and paste content below
+# Step 1: Preview content
+node scripts/distribute.js --list          # See all drafts
+node scripts/distribute.js --preview twitter 1   # Preview specific draft
 
-# Option 2: Buffer API
-export BUFFER_ACCESS_TOKEN="your_token_here"
-node scripts/distribute.js --platform twitter --draft 1
+# Step 2: Copy content, paste into Buffer GUI
+# Open https://publish.buffer.com
 
-# Option 3: Direct APIs
-node scripts/distribute.js --direct --platform twitter
+# Step 3 (optional): Run enhancers before posting
+node scripts/distribute.js --enhance twitter 1
 ```
+
+---
+
+## Progress & Roadmap
+
+### Current Status: Buffer GUI (Manual)
+- ✅ Content drafts ready (2 Twitter, 2 LinkedIn, 2 Reddit)
+- ✅ CLI tool for preview/enhance
+- ✅ `/distribute` slash command
+- ✅ LinkedIn timing guard (blocks 8am-5:30pm EST)
+- ⏸️ Buffer API blocked (they deprecated new developer apps)
+
+### Future: Pure API Integration
+When we want full automation:
+
+| Platform | API Status | Setup Required |
+|----------|------------|----------------|
+| Twitter/X | Available | developer.twitter.com → Create app → Get OAuth tokens |
+| LinkedIn | Available | linkedin.com/developers → Create app → OAuth 2.0 flow |
+| Reddit | Restricted | PRAW library, but posting APIs are limited |
+| Buffer | ❌ Blocked | No longer accepting new developer apps |
+
+**Next steps for API automation:**
+1. [ ] Set up Twitter Developer account ($100/mo for basic API)
+2. [ ] Build OAuth flow for Twitter posting
+3. [ ] Add thread support (post all tweets in sequence)
+4. [ ] LinkedIn API integration (complex but doable)
+5. [ ] Consider alternatives: Typefully API, Hypefury API
+
+**For now:** Buffer GUI works perfectly. Copy → Paste → Schedule.
 
 ---
 
@@ -665,59 +696,59 @@ To add a new copywriting style, append to this section:
 
 ---
 
-## Technical Distribution
+## How to Post (Buffer GUI)
 
-### Option A: Buffer App (Manual)
+### Step-by-Step
 
-1. Go to https://publish.buffer.com
-2. Connect Twitter + LinkedIn
-3. Copy content from drafts above
-4. Schedule:
-   - Twitter thread: Tuesday 9am EST
-   - LinkedIn: Tuesday 10am EST
-   - (Reddit: Post manually - no Buffer support)
+1. **Preview your content**
+   ```bash
+   node scripts/distribute.js --preview twitter 1
+   ```
 
-### Option B: Buffer API
+2. **Open Buffer**
+   - Go to [publish.buffer.com](https://publish.buffer.com)
+   - Make sure Twitter + LinkedIn are connected
 
-```bash
-# Setup
-npm install @bufferapp/buffer-js
-export BUFFER_ACCESS_TOKEN="your_token"
+3. **Create post**
+   - Click "Create" or the compose button
+   - Select the platform (Twitter or LinkedIn)
+   - Paste the content from the preview
+
+4. **Schedule**
+   - **Twitter:** Tuesday-Thursday, 9:00 AM EST
+   - **LinkedIn:** Tuesday-Thursday, 6:30 AM or 6:00 PM EST (NOT during work hours!)
+   - **Reddit:** Post directly on reddit.com (Buffer doesn't support)
+
+5. **For Twitter threads**
+   - Paste first tweet
+   - Click "Add to thread" for each subsequent tweet
+   - Or use Twitter's native composer for better thread UX
+
+### LinkedIn Timing Rules
+
+```
+🚫 BLOCKED: 8:00 AM - 5:30 PM EST (work hours)
+
+✅ ALLOWED:
+   • Early morning: 6:00 AM - 7:45 AM EST
+   • Early evening: 5:45 PM - 9:00 PM EST
 ```
 
-```javascript
-// scripts/buffer-post.js
-const Buffer = require('@bufferapp/buffer-js');
+**Why?** LinkedIn during work hours looks like you're not working. Early AM = "thought leader grinding before work." Evening = "reflecting on the day."
 
-const client = new Buffer({
-  accessToken: process.env.BUFFER_ACCESS_TOKEN
-});
+---
 
-async function schedulePost(profileId, text, scheduledAt) {
-  return client.updates.create({
-    profile_ids: [profileId],
-    text,
-    scheduled_at: scheduledAt
-  });
-}
+## Future: Direct API Integration
 
-// Get profile IDs
-async function getProfiles() {
-  const profiles = await client.profiles.list();
-  console.log(profiles);
-}
-```
+Buffer deprecated their API for new apps. When we want full automation:
 
-### Option C: Direct APIs
-
-**Twitter API v2:**
+### Twitter API v2
 ```bash
-# Requires developer account: developer.twitter.com
+# Requires: developer.twitter.com account (~$100/mo for basic)
 npm install twitter-api-v2
 ```
 
 ```javascript
-// scripts/twitter-post.js
 const { TwitterApi } = require('twitter-api-v2');
 
 const client = new TwitterApi({
@@ -739,14 +770,9 @@ async function postThread(tweets) {
 }
 ```
 
-**LinkedIn API:**
-```bash
-# Requires LinkedIn app: linkedin.com/developers
-# OAuth 2.0 flow needed for posting
-```
-
+### LinkedIn API
 ```javascript
-// scripts/linkedin-post.js
+// Requires: linkedin.com/developers app + OAuth 2.0
 const axios = require('axios');
 
 async function postToLinkedIn(accessToken, authorId, text) {
@@ -766,12 +792,8 @@ async function postToLinkedIn(accessToken, authorId, text) {
 }
 ```
 
-**Reddit (PRAW - Python):**
-```bash
-# Reddit doesn't allow automated posting for new apps easily
-# Best approach: manual posting
-# If needed: pip install praw
-```
+### Reddit
+Manual posting only. Reddit's API restricts automated posts for new apps.
 
 ---
 
