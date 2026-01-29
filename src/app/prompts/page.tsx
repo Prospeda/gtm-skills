@@ -166,26 +166,95 @@ export default function PromptsIndexPage() {
           </div>
         </section>
 
+        {/* Tier 2: Triple Combinations */}
+        <section className="mb-16">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-6 h-6 rounded bg-gradient-to-r from-orange-500 to-red-500 flex items-center justify-center">
+              <span className="text-white text-xs font-bold">3</span>
+            </div>
+            <h2 className="text-2xl font-bold">Industry + Role + Workflow</h2>
+            <Badge variant="secondary">{industries.length * roles.length * workflows.length} pages</Badge>
+            <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30">Tier 2</Badge>
+          </div>
+          <p className="text-muted-foreground mb-6">
+            The most specific prompts—tailored for a specific role doing a specific workflow in a specific industry.
+          </p>
+
+          {/* Show a sample of popular triple combinations */}
+          <div className="grid md:grid-cols-4 gap-3 mb-6">
+            {[
+              { href: '/prompts/saas/sdr/cold-outreach', label: 'SaaS SDR Cold Outreach' },
+              { href: '/prompts/saas/ae/discovery', label: 'SaaS AE Discovery' },
+              { href: '/prompts/fintech/sdr/cold-outreach', label: 'FinTech SDR Cold Outreach' },
+              { href: '/prompts/healthcare/ae/objection-handling', label: 'Healthcare AE Objections' },
+              { href: '/prompts/saas/ae/negotiation', label: 'SaaS AE Negotiation' },
+              { href: '/prompts/manufacturing/sdr/follow-up', label: 'Manufacturing SDR Follow-up' },
+              { href: '/prompts/fintech/ae/demo', label: 'FinTech AE Demo' },
+              { href: '/prompts/ecommerce/sdr/cold-outreach', label: 'E-commerce SDR Outreach' },
+            ].map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="p-3 rounded-lg border border-border bg-card hover:border-orange-500/30 transition-colors text-center text-sm"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* Expandable industry selector */}
+          <details className="group">
+            <summary className="cursor-pointer text-sm text-orange-400 hover:text-orange-300 flex items-center gap-2">
+              Browse all {industries.length * roles.length * workflows.length} combinations →
+            </summary>
+            <div className="mt-4 p-4 rounded-lg bg-zinc-900/50 border border-zinc-800">
+              <p className="text-sm text-muted-foreground mb-4">Select an industry to see all role + workflow combinations:</p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                {industries.map((industry) => (
+                  <div key={industry.slug} className="p-3 rounded border border-border bg-card">
+                    <div className="font-medium text-sm mb-2">{industry.shortName}</div>
+                    <div className="flex flex-wrap gap-1">
+                      {roles.slice(0, 3).map((role) => (
+                        <Link
+                          key={role.slug}
+                          href={`/prompts/${industry.slug}/${role.slug}/cold-outreach`}
+                          className="text-xs px-2 py-1 rounded bg-orange-500/10 text-orange-400 hover:bg-orange-500/20"
+                        >
+                          {role.shortName}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </details>
+        </section>
+
         {/* Stats */}
         <section className="mb-16 p-8 rounded-2xl bg-zinc-900/50 border border-zinc-800">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 text-center">
             <div>
               <div className="text-3xl font-bold text-blue-400">{industries.length * roles.length}</div>
-              <div className="text-sm text-muted-foreground">Industry + Role Pages</div>
+              <div className="text-sm text-muted-foreground">Industry + Role</div>
             </div>
             <div>
               <div className="text-3xl font-bold text-green-400">{industries.length * methodologies.length}</div>
-              <div className="text-sm text-muted-foreground">Industry + Method Pages</div>
+              <div className="text-sm text-muted-foreground">Industry + Method</div>
             </div>
             <div>
               <div className="text-3xl font-bold text-purple-400">{roles.length * workflows.length}</div>
-              <div className="text-sm text-muted-foreground">Role + Workflow Pages</div>
+              <div className="text-sm text-muted-foreground">Role + Workflow</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-orange-400">
-                {(industries.length * roles.length) + (industries.length * methodologies.length) + (roles.length * workflows.length)}
+              <div className="text-3xl font-bold text-orange-400">{industries.length * roles.length * workflows.length}</div>
+              <div className="text-sm text-muted-foreground">Triple Combos</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-white">
+                {(industries.length * roles.length) + (industries.length * methodologies.length) + (roles.length * workflows.length) + (industries.length * roles.length * workflows.length)}
               </div>
-              <div className="text-sm text-muted-foreground">Total Prompt Pages</div>
+              <div className="text-sm text-muted-foreground">Total Pages</div>
             </div>
           </div>
         </section>
@@ -195,7 +264,7 @@ export default function PromptsIndexPage() {
           <h2 className="text-2xl font-bold mb-6">Popular Combinations</h2>
           <div className="grid md:grid-cols-3 gap-4">
             {[
-              { href: '/prompts/saas/sdr', label: 'SaaS SDR Prompts', desc: 'Cold outreach for software sales' },
+              { href: '/prompts/saas/sdr/cold-outreach', label: 'SaaS SDR Cold Outreach', desc: 'Cold emails for software sales' },
               { href: '/prompts/saas/meddpicc', label: 'MEDDPICC for SaaS', desc: 'Enterprise qualification' },
               { href: '/prompts/sdr/cold-outreach', label: 'SDR Cold Outreach', desc: 'Email and LinkedIn templates' },
               { href: '/prompts/fintech/ae', label: 'FinTech AE Prompts', desc: 'Discovery and closing' },

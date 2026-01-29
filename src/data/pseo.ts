@@ -961,28 +961,339 @@ Keep each under 50 words. Not salesy.`
   return prompts;
 }
 
+// Triple combination: Industry × Role × Workflow
+export function getPromptsForTripleCombination(industry: Industry, role: Role, workflow: Workflow): string[] {
+  const prompts: string[] = [];
+
+  if (workflow.slug === 'cold-outreach') {
+    if (role.slug === 'sdr') {
+      prompts.push(
+        `Write a cold email to a ${industry.buyers[0]} at a ${industry.shortName} company.
+
+Context:
+- Industry: ${industry.name}
+- Target pain: ${industry.painPoints[0]}
+- Trigger: [RECENT NEWS/EVENT]
+
+Rules:
+- Subject under 5 words
+- Body under 75 words
+- Reference ${industry.shortName}-specific challenge
+- One clear CTA`,
+
+        `Create a 3-touch cold email sequence for ${industry.shortName} prospects.
+
+Target: ${industry.buyers[0]} or ${industry.buyers[1]}
+Pain points to address: ${industry.painPoints.slice(0, 2).join(', ')}
+
+Email 1: Pattern interrupt + ${industry.shortName} insight
+Email 2: Case study or proof point (3 days later)
+Email 3: Breakup with value (5 days later)
+
+Each under 75 words.`,
+
+        `Write a LinkedIn connection request for a ${industry.buyers[0]} at a ${industry.shortName} company.
+
+What I know about them: [THEIR BACKGROUND/POST]
+My value prop for ${industry.shortName}: [YOUR OFFERING]
+
+Rules:
+- Under 300 characters
+- Reference something specific to ${industry.shortName}
+- Don't pitch, be curious`,
+
+        `My cold email to a ${industry.shortName} ${industry.buyers[0]} got this response: "[THEIR REPLY]"
+
+Write a follow-up that:
+- Acknowledges their point
+- Provides unexpected value about ${industry.painPoints[0]}
+- Keeps the door open
+- Doesn't argue or push`
+      );
+    } else if (role.slug === 'ae') {
+      prompts.push(
+        `Write an executive outreach email from an AE to a ${industry.buyers[0]} at a ${industry.shortName} company.
+
+Context:
+- We already talked to their ${industry.buyers[2] || 'team member'}
+- They care about ${industry.painPoints[0]}
+- We can help with [YOUR VALUE PROP]
+
+Make it executive-appropriate: brief, direct, focused on outcomes.`,
+
+        `Create a re-engagement email for a ${industry.shortName} deal that went dark.
+
+Last contact: [DATE]
+Stage when they went dark: [STAGE]
+Their main concern was: ${industry.painPoints[0]}
+
+Write something that:
+- Doesn't guilt them
+- Adds new value
+- Creates soft urgency`
+      );
+    } else if (role.slug === 'founder') {
+      prompts.push(
+        `Write a founder cold email to a ${industry.buyers[0]} at a ${industry.shortName} company.
+
+I'm CEO of [MY COMPANY].
+We help ${industry.shortName} companies with ${industry.painPoints[0]}.
+I noticed [SOMETHING SPECIFIC ABOUT THEIR COMPANY].
+
+Make it personal, not templated. Founder-to-executive tone.`,
+
+        `Create a warm intro request for a ${industry.shortName} target.
+
+I want to reach: ${industry.buyers[0]} at [TARGET COMPANY]
+My mutual connection: [NAME]
+Why I want the intro: ${industry.painPoints[0]}
+
+Write:
+1. The ask to my connection
+2. A forwardable blurb they can use`
+      );
+    }
+  } else if (workflow.slug === 'discovery') {
+    prompts.push(
+      `Create a ${industry.shortName} discovery call framework for a ${role.shortName}.
+
+Opening (2 min):
+- Build rapport with ${industry.shortName}-relevant small talk
+- Set agenda
+
+Situation (5 min):
+- Current state questions about ${industry.painPoints[0]}
+
+Problem (10 min):
+- Impact of ${industry.painPoints.slice(0, 2).join(' and ')}
+- Who else is affected
+
+Implication (5 min):
+- Cost of inaction
+- Competitive pressure
+
+Vision (5 min):
+- Ideal future state
+- Success metrics
+
+Next steps (3 min):
+- Stakeholder mapping
+- Timeline`,
+
+      `Write 10 ${industry.shortName}-specific discovery questions for a ${role.shortName} calling on a ${industry.buyers[0]}.
+
+Focus areas:
+- ${industry.painPoints[0]}
+- ${industry.painPoints[1]}
+- Decision process at ${industry.shortName} companies
+- Budget and timeline
+
+Mix of situation, problem, and implication questions.`,
+
+      `My ${industry.shortName} discovery call revealed:
+[PASTE KEY FINDINGS]
+
+As an ${role.shortName}, help me:
+1. Summarize their situation
+2. Identify the real pain
+3. Quantify the impact
+4. Plan my next steps`
+    );
+  } else if (workflow.slug === 'demo') {
+    prompts.push(
+      `Create a ${industry.shortName} demo agenda for a ${role.shortName}.
+
+Attendees: ${industry.buyers.slice(0, 3).join(', ')}
+Their pain points: ${industry.painPoints.slice(0, 2).join(', ')}
+Time: 30 minutes
+
+Structure:
+- Recap their situation (3 min)
+- Show solution for ${industry.painPoints[0]} (10 min)
+- Show solution for ${industry.painPoints[1]} (10 min)
+- ROI discussion (5 min)
+- Next steps (2 min)`,
+
+      `Write demo talking points for a ${industry.shortName} prospect.
+
+Feature: [YOUR FEATURE]
+Their pain: ${industry.painPoints[0]}
+Their role: ${industry.buyers[0]}
+
+Connect the feature to:
+- Their specific challenge
+- Business outcome they care about
+- ${industry.shortName} industry context`,
+
+      `Handle this objection during a ${industry.shortName} demo:
+
+Prospect (${industry.buyers[0]}): "[THEIR OBJECTION]"
+
+As an ${role.shortName}, respond by:
+- Acknowledging their concern
+- Reframing in ${industry.shortName} context
+- Providing proof point
+- Confirming resolution`
+    );
+  } else if (workflow.slug === 'objection-handling') {
+    prompts.push(
+      `Create an objection handling guide for ${role.shortName}s selling to ${industry.shortName}.
+
+Common ${industry.shortName} objections:
+1. "${industry.painPoints[0]} isn't a priority"
+2. "We already have a solution"
+3. "Too expensive for our ${industry.shortName} budget"
+4. "Need to involve ${industry.buyers[1]}"
+5. "Bad timing with [${industry.shortName} SPECIFIC ISSUE]"
+
+For each: Acknowledge → Clarify → Respond → Advance`,
+
+      `My ${industry.shortName} prospect (${industry.buyers[0]}) said: "[THEIR OBJECTION]"
+
+As an ${role.shortName}, help me:
+- Understand the real concern behind it
+- Questions to ask to dig deeper
+- How to respond without being defensive
+- How to advance the conversation`,
+
+      `The ${industry.buyers[1]} at my ${industry.shortName} prospect is blocking the deal.
+
+Their concern: ${industry.painPoints[1]}
+My champion: ${industry.buyers[0]}
+
+Help me:
+- Create content to address ${industry.buyers[1]}'s concerns
+- Coach my champion on how to sell internally
+- Plan a direct outreach if needed`
+    );
+  } else if (workflow.slug === 'negotiation') {
+    prompts.push(
+      `My ${industry.shortName} prospect wants a 25% discount.
+
+Context:
+- Deal size: [AMOUNT]
+- Buyer: ${industry.buyers[0]}
+- Their concern: ${industry.painPoints[0]}
+- Competition: [YES/NO]
+
+As an ${role.shortName}, help me:
+- Understand why they're asking
+- Alternatives to pure discount
+- What to ask for in return
+- How to hold value`,
+
+      `Create a negotiation prep sheet for my ${industry.shortName} deal.
+
+Account: [NAME]
+Key stakeholders: ${industry.buyers.slice(0, 3).join(', ')}
+Deal value: [AMOUNT]
+Their priorities: ${industry.painPoints.slice(0, 2).join(', ')}
+Our must-haves: [LIST]
+Our nice-to-haves: [LIST]
+
+Map out potential trades and concessions.`,
+
+      `Write a "final offer" email for a ${industry.shortName} deal.
+
+We've been negotiating for [TIME].
+They want: [THEIR ASKS]
+I can offer: [MY FINAL POSITION]
+
+Make it firm but preserve the ${industry.shortName} relationship.`
+    );
+  } else if (workflow.slug === 'follow-up') {
+    prompts.push(
+      `Create a follow-up sequence for a ${industry.shortName} prospect who went dark.
+
+Context:
+- Role: ${industry.buyers[0]}
+- Last contact: [DATE]
+- Stage: [STAGE]
+- Their interest: ${industry.painPoints[0]}
+
+As an ${role.shortName}, write:
+1. Value-add follow-up (1 week)
+2. New angle follow-up (2 weeks)
+3. Breakup email (3 weeks)
+
+Each under 50 words, ${industry.shortName}-relevant.`,
+
+      `My ${industry.shortName} deal has stalled after [STAGE].
+
+Champion: ${industry.buyers[0]}
+Blocker: ${industry.buyers[1]}
+Key concern: ${industry.painPoints[1]}
+
+Help me:
+- Re-engage the champion
+- Create content for the blocker
+- Propose a path forward`,
+
+      `Write a "thinking of you" touch for a ${industry.shortName} prospect in long-term nurture.
+
+They said "not now" [X] months ago.
+Their situation: ${industry.painPoints[0]}
+Recent ${industry.shortName} news: [IF ANY]
+
+Make it valuable, not salesy. Under 50 words.`
+    );
+  }
+
+  // If no workflow-specific prompts, provide general triple combo prompts
+  if (prompts.length === 0) {
+    prompts.push(
+      `Create a ${workflow.name.toLowerCase()} playbook for ${role.shortName}s in ${industry.shortName}.
+
+Target buyers: ${industry.buyers.join(', ')}
+Key pain points: ${industry.painPoints.join(', ')}
+${role.shortName} activities: ${role.activities.join(', ')}
+
+Include specific prompts, talk tracks, and templates.`,
+
+      `What are the top 5 things a ${role.shortName} should know about ${workflow.name.toLowerCase()} in ${industry.shortName}?
+
+Consider:
+- ${industry.shortName}-specific challenges
+- Buyer expectations
+- Common mistakes
+- Best practices`
+    );
+  }
+
+  return prompts;
+}
+
 // Generate all possible slugs for static generation
 export function getAllPromptSlugs(): string[][] {
   const slugs: string[][] = [];
 
-  // Industry × Role
+  // Industry × Role (Tier 1)
   for (const industry of industries) {
     for (const role of roles) {
       slugs.push([industry.slug, role.slug]);
     }
   }
 
-  // Industry × Methodology
+  // Industry × Methodology (Tier 1)
   for (const industry of industries) {
     for (const methodology of methodologies) {
       slugs.push([industry.slug, methodology.slug]);
     }
   }
 
-  // Role × Workflow
+  // Role × Workflow (Tier 1)
   for (const role of roles) {
     for (const workflow of workflows) {
       slugs.push([role.slug, workflow.slug]);
+    }
+  }
+
+  // Industry × Role × Workflow (Tier 2)
+  for (const industry of industries) {
+    for (const role of roles) {
+      for (const workflow of workflows) {
+        slugs.push([industry.slug, role.slug, workflow.slug]);
+      }
     }
   }
 
@@ -991,7 +1302,7 @@ export function getAllPromptSlugs(): string[][] {
 
 // Get page data from slug
 export function getPageFromSlug(slugParts: string[]): {
-  type: 'industry-role' | 'industry-methodology' | 'role-workflow' | null;
+  type: 'industry-role' | 'industry-methodology' | 'role-workflow' | 'industry-role-workflow' | null;
   industry?: Industry;
   role?: Role;
   methodology?: Methodology;
@@ -1000,6 +1311,27 @@ export function getPageFromSlug(slugParts: string[]): {
   title: string;
   description: string;
 } | null {
+  // Handle triple combinations (Tier 2)
+  if (slugParts.length === 3) {
+    const [first, second, third] = slugParts;
+    const industry = industries.find(i => i.slug === first);
+    const role = roles.find(r => r.slug === second);
+    const workflow = workflows.find(w => w.slug === third);
+
+    if (industry && role && workflow) {
+      return {
+        type: 'industry-role-workflow',
+        industry,
+        role,
+        workflow,
+        prompts: getPromptsForTripleCombination(industry, role, workflow),
+        title: `${industry.shortName} ${role.shortName} ${workflow.shortName} Prompts`,
+        description: `${workflow.name} prompts for ${role.name}s selling into ${industry.name}. Tailored templates for ${industry.shortName} buyers including ${industry.buyers.slice(0, 2).join(' and ')}.`,
+      };
+    }
+    return null;
+  }
+
   if (slugParts.length !== 2) return null;
 
   const [first, second] = slugParts;

@@ -50,8 +50,29 @@ export async function generateStaticParams() {
 }
 
 function getRelatedPages(slugParts: string[]): { href: string; label: string }[] {
-  const [first, second] = slugParts;
+  const [first, second, third] = slugParts;
   const related: { href: string; label: string }[] = [];
+
+  // Handle triple combinations
+  if (slugParts.length === 3) {
+    const industry = industries.find(i => i.slug === first);
+    const role = roles.find(r => r.slug === second);
+    const workflow = workflows.find(w => w.slug === third);
+
+    if (industry && role && workflow) {
+      // Suggest other workflows for same industry+role
+      const otherWorkflows = workflows.filter(w => w.slug !== workflow.slug).slice(0, 2);
+      otherWorkflows.forEach(w => {
+        related.push({ href: `/prompts/${industry.slug}/${role.slug}/${w.slug}`, label: `${industry.shortName} ${role.shortName} ${w.shortName}` });
+      });
+      // Suggest same workflow for other roles
+      const otherRoles = roles.filter(r => r.slug !== role.slug).slice(0, 2);
+      otherRoles.forEach(r => {
+        related.push({ href: `/prompts/${industry.slug}/${r.slug}/${workflow.slug}`, label: `${industry.shortName} ${r.shortName} ${workflow.shortName}` });
+      });
+    }
+    return related.slice(0, 4);
+  }
 
   // Find what type of page this is and suggest related
   const industry = industries.find(i => i.slug === first);
@@ -70,6 +91,10 @@ function getRelatedPages(slugParts: string[]): { href: string; label: string }[]
     });
     otherIndustries.forEach(i => {
       related.push({ href: `/prompts/${i.slug}/${role.slug}`, label: `${i.shortName} ${role.shortName}` });
+    });
+    // Also suggest drilling down to workflows
+    workflows.slice(0, 2).forEach(w => {
+      related.push({ href: `/prompts/${industry.slug}/${role.slug}/${w.slug}`, label: `${industry.shortName} ${role.shortName} ${w.shortName}` });
     });
   } else if (industry && methodology) {
     // Industry-Methodology: suggest other methodologies, same methodology in other industries
@@ -106,6 +131,8 @@ function getIcon(type: string) {
       return BookOpen;
     case 'role-workflow':
       return Workflow;
+    case 'industry-role-workflow':
+      return Workflow;
     default:
       return Users;
   }
@@ -119,6 +146,8 @@ function getBadgeColor(type: string) {
       return 'border-green-500/30 text-green-400';
     case 'role-workflow':
       return 'border-purple-500/30 text-purple-400';
+    case 'industry-role-workflow':
+      return 'border-orange-500/30 text-orange-400';
     default:
       return 'border-zinc-500/30 text-zinc-400';
   }
@@ -132,6 +161,8 @@ function getTypeLabel(type: string) {
       return 'Industry + Methodology';
     case 'role-workflow':
       return 'Role + Workflow';
+    case 'industry-role-workflow':
+      return 'Industry + Role + Workflow';
     default:
       return 'Prompts';
   }
