@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import { getAllPromptSlugs } from '@/data/pseo';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://gtm-skills.com';
@@ -9,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/agentic-bdr',
     '/tutorials',
     '/tutorials/moltbot-agentic-sdr',
+    '/prompts',
     '/industry',
     '/industry/saas',
     '/industry/financial-services',
@@ -79,12 +81,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const tonalityPages = ['/free-tools/tonalities', ...tonalities.map((t) => `/free-tools/tonalities/${t}`)];
 
-  const allPages = [...corePages, ...tonalityPages];
+  // pSEO prompt pages (Industry×Role, Industry×Methodology, Role×Workflow)
+  const promptSlugs = getAllPromptSlugs();
+  const promptPages = promptSlugs.map((slug) => `/prompts/${slug.join('/')}`);
+
+  const allPages = [...corePages, ...tonalityPages, ...promptPages];
 
   return allPages.map((path) => ({
     url: `${baseUrl}${path}`,
     lastModified: new Date(),
     changeFrequency: path === '' ? 'daily' : 'weekly',
-    priority: path === '' ? 1 : path.includes('tonalities') ? 0.7 : 0.8,
+    priority: path === '' ? 1 : path.startsWith('/prompts/') ? 0.8 : path.includes('tonalities') ? 0.7 : 0.8,
   }));
 }
