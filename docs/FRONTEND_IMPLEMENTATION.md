@@ -1,8 +1,8 @@
 # Frontend Implementation Plan
 
 > **Status:** Ready for Implementation
+> **Last Updated:** February 1, 2026
 > **Mockup:** See `mockup.html` in repo root
-> **Est. Scope:** 4 phases across homepage, nav, footer, and new pages
 
 ---
 
@@ -20,6 +20,21 @@
 
 ---
 
+## NEW: Features to Showcase (Weeks 1-8)
+
+| Feature | Status | Route | Priority |
+|---------|--------|-------|----------|
+| API + llms.txt | Live | `/developers`, `/openapi.json`, `/llms.txt` | HIGH |
+| Browser Extension | Live | `/download` | HIGH |
+| Leaderboard | Live | `/leaderboard` | HIGH |
+| HubSpot Integration | Live | `/integrations/hubspot` | MEDIUM |
+| Revenue Attribution | Live | `/leaderboard/impact` | MEDIUM |
+| Voice Templates | Live | `/voice-templates` | HIGH |
+| Contributors | Live | `/contributors` | MEDIUM |
+| Certifications | Live | `/certifications` | HIGH |
+
+---
+
 ## Phase 1: Homepage New Sections
 
 ### 1.1 Ecosystem Bar
@@ -30,7 +45,7 @@
 // Layout: flex-wrap justify-center gap-8
 // Items: icon + label pairs
 // Colors: orange (prompts), blue (extension), violet (voice),
-//         amber (leaderboard), teal (CRM), emerald (API)
+//         amber (leaderboard), teal (CRM), emerald (API), purple (certifications)
 ```
 
 **Tasks:**
@@ -43,12 +58,6 @@
 
 ### 1.2 Tools & Integrations Grid
 **File:** `src/components/home/tools-grid.tsx`
-
-```tsx
-// 4-card grid showcasing Extension, Voice, HubSpot, API
-// Each card: gradient icon, title, description, colored CTA
-// Hover: border color change, icon scale
-```
 
 **Cards:**
 | Card | Gradient | Link |
@@ -71,8 +80,8 @@
 
 ```tsx
 // Two-column layout: left = description + stats, right = terminal mockup
-// Stats: Revenue Tracked, Outcomes Logged, Deals Won
-// Terminal: top 3 prompts with scores and revenue badges
+// Stats: Total Votes, Prompts Submitted, Outcomes Reported
+// Terminal: top 3 prompts with scores
 ```
 
 **Tasks:**
@@ -88,12 +97,6 @@
 ### 1.4 Voice Showcase Section
 **File:** `src/components/home/voice-showcase.tsx`
 
-```tsx
-// Two-column: left = waveform animation, right = description + checklist
-// Waveform: animated bars with staggered pulse
-// Checklist: MEDDPICC, Executive Cold Call, Objection Handling, Voicemail
-```
-
 **Tasks:**
 - [ ] Create `voice-showcase.tsx` component
 - [ ] Create animated waveform with CSS keyframes
@@ -107,23 +110,51 @@
 ### 1.5 Developers Section
 **File:** `src/components/home/developers-section.tsx`
 
-```tsx
-// Centered layout: badge, heading, description, code block, resource buttons
-// Code block: terminal mockup with curl example
-// Buttons: API Reference, OpenAPI Spec, llms.txt, GitHub
-```
-
 **Tasks:**
 - [ ] Create `developers-section.tsx` component
 - [ ] Create code block with syntax highlighting (manual spans)
 - [ ] Add copy button functionality
-- [ ] Add resource buttons row
+- [ ] Add resource buttons row (API Docs, OpenAPI, llms.txt, GitHub)
 - [ ] Style section with `bg-gradient-to-b from-emerald-500/5`
 - [ ] Import and place in `src/app/page.tsx`
 
 ---
 
-### 1.6 Update Hero Copy
+### 1.6 NEW: Certification Promo Section
+**File:** `src/components/home/certification-promo.tsx`
+
+```tsx
+// Highlight the certification program
+// Show badge preview, key stats (free, 1hr, recognized)
+// CTA to /certifications
+```
+
+**Tasks:**
+- [ ] Create `certification-promo.tsx` component
+- [ ] Show Level 1, 2, 3 badges preview
+- [ ] Add "Free • 1 Hour • Recognized" badges
+- [ ] CTA: "Get Certified Free"
+- [ ] Style with violet gradient
+
+---
+
+### 1.7 NEW: Contributors Spotlight
+**File:** `src/components/home/contributors-spotlight.tsx`
+
+```tsx
+// Show top 3 contributors with avatars and stats
+// Link to /contributors
+```
+
+**Tasks:**
+- [ ] Create `contributors-spotlight.tsx` component
+- [ ] Fetch top 3 from `/api/v1/contributors/leaderboard`
+- [ ] Display name, avatar, prompt count, vote count
+- [ ] CTA: "Join the Community"
+
+---
+
+### 1.8 Update Hero Copy
 **File:** `src/app/page.tsx`
 
 **Changes:**
@@ -141,7 +172,7 @@
 **New Nav Items:**
 ```tsx
 const navItems = [
-  { label: 'Prompts', href: '/prompts', children: [...] },
+  { label: 'Prompts', href: '/prompts' },
   {
     label: 'Tools',
     href: '/tools',
@@ -154,11 +185,20 @@ const navItems = [
   },
   {
     label: 'Community',
-    href: '/leaderboard',
+    href: '/community',
     children: [
       { label: 'Leaderboard', href: '/leaderboard', icon: Trophy },
-      { label: 'Impact Dashboard', href: '/leaderboard/impact', icon: TrendingUp },
+      { label: 'Contributors', href: '/contributors', icon: Users },
       { label: 'Submit Prompt', href: '/leaderboard/submit', icon: Plus },
+    ]
+  },
+  {
+    label: 'Learn',
+    href: '/certifications',
+    children: [
+      { label: 'Certifications', href: '/certifications', icon: Award },
+      { label: 'Tutorials', href: '/tutorials', icon: BookOpen },
+      { label: 'Agentic BDR', href: '/agentic-bdr', icon: Bot },
     ]
   },
   {
@@ -178,6 +218,7 @@ const navItems = [
 - [ ] Create dropdown component or use Radix NavigationMenu
 - [ ] Add Tools dropdown with 4 items
 - [ ] Add Community dropdown with 3 items
+- [ ] Add Learn dropdown with 3 items
 - [ ] Add Developers dropdown with 4 items
 - [ ] Add GitHub star count badge in nav
 - [ ] Test mobile menu
@@ -214,7 +255,8 @@ const footerSections = [
     title: 'Community',
     links: [
       { label: 'Leaderboard', href: '/leaderboard' },
-      { label: 'Impact Dashboard', href: '/leaderboard/impact' },
+      { label: 'Contributors', href: '/contributors' },
+      { label: 'Certifications', href: '/certifications' },
       { label: 'Submit Prompt', href: '/leaderboard/submit' },
     ]
   },
@@ -237,7 +279,7 @@ const footerSections = [
 
 ---
 
-## Phase 4: New Pages
+## Phase 4: New/Updated Pages
 
 ### 4.1 Tools Hub Page
 **File:** `src/app/tools/page.tsx`
@@ -272,20 +314,44 @@ const footerSections = [
 
 ---
 
-### 4.3 Download/Extension Page
+### 4.3 Download/Extension Page (EXISTS - needs update)
 **File:** `src/app/download/page.tsx`
 
+**Updates:**
+- [ ] Add extension screenshots/mockups
+- [ ] Add feature descriptions for LinkedIn + Gmail
+- [ ] Add installation steps
+- [ ] Add Chrome Web Store link (when available)
+
+---
+
+### 4.4 Contributors Page (EXISTS)
+**File:** `src/app/contributors/page.tsx`
+
+**Status:** ✅ Complete
+
+---
+
+### 4.5 Certifications Page (EXISTS)
+**File:** `src/app/certifications/page.tsx`
+
+**Status:** ✅ Complete
+
+---
+
+### 4.6 Community Hub Page
+**File:** `src/app/community/page.tsx`
+
 **Content:**
-- Hero with extension preview image
-- Feature list (LinkedIn, Gmail, etc.)
-- Installation instructions
-- Chrome Web Store link (when available)
+- Links to Leaderboard, Contributors, Submit
+- Community stats
+- Call to join
 
 **Tasks:**
-- [ ] Create `src/app/download/page.tsx`
-- [ ] Add extension screenshots/mockups
-- [ ] Add feature descriptions
-- [ ] Add installation steps
+- [ ] Create `src/app/community/page.tsx`
+- [ ] Add stats from leaderboard
+- [ ] Add contributor spotlight
+- [ ] Add join CTA
 
 ---
 
@@ -299,8 +365,18 @@ src/
 │   │   └── page.tsx                # NEW
 │   ├── developers/
 │   │   └── page.tsx                # NEW
-│   └── download/
-│       └── page.tsx                # NEW
+│   ├── community/
+│   │   └── page.tsx                # NEW
+│   ├── download/
+│   │   └── page.tsx                # UPDATE
+│   ├── contributors/
+│   │   └── page.tsx                # EXISTS
+│   └── certifications/
+│       ├── page.tsx                # EXISTS
+│       ├── [slug]/
+│       │   └── page.tsx            # EXISTS
+│       └── [slug]/[module]/
+│           └── page.tsx            # EXISTS
 ├── components/
 │   ├── header.tsx                  # UPDATE - add dropdowns
 │   ├── footer.tsx                  # UPDATE - add sections
@@ -309,7 +385,9 @@ src/
 │       ├── tools-grid.tsx          # NEW
 │       ├── leaderboard-preview.tsx # NEW
 │       ├── voice-showcase.tsx      # NEW
-│       └── developers-section.tsx  # NEW
+│       ├── developers-section.tsx  # NEW
+│       ├── certification-promo.tsx # NEW
+│       └── contributors-spotlight.tsx # NEW
 ```
 
 ---
@@ -323,12 +401,15 @@ src/
 | 3 | Leaderboard preview | `leaderboard-preview.tsx`, `page.tsx` |
 | 4 | Voice showcase | `voice-showcase.tsx`, `page.tsx` |
 | 5 | Developers section | `developers-section.tsx`, `page.tsx` |
-| 6 | Update hero copy | `page.tsx` |
-| 7 | Navigation dropdowns | `header.tsx` |
-| 8 | Footer updates | `footer.tsx` |
-| 9 | Tools hub page | `tools/page.tsx` |
-| 10 | Developers hub page | `developers/page.tsx` |
-| 11 | Download page | `download/page.tsx` |
+| 6 | Certification promo | `certification-promo.tsx`, `page.tsx` |
+| 7 | Contributors spotlight | `contributors-spotlight.tsx`, `page.tsx` |
+| 8 | Update hero copy | `page.tsx` |
+| 9 | Navigation dropdowns | `header.tsx` |
+| 10 | Footer updates | `footer.tsx` |
+| 11 | Tools hub page | `tools/page.tsx` |
+| 12 | Developers hub page | `developers/page.tsx` |
+| 13 | Community hub page | `community/page.tsx` |
+| 14 | Update download page | `download/page.tsx` |
 
 ---
 
@@ -343,6 +424,7 @@ src/
 - [ ] GitHub star count updates
 - [ ] Dark mode consistent
 - [ ] No console errors
+- [ ] All new routes accessible
 
 ---
 
@@ -359,3 +441,4 @@ Optional enhancement:
 ---
 
 *Created: February 1, 2026*
+*Updated: February 1, 2026 (Added Week 7-8 features)*
