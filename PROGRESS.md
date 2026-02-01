@@ -93,6 +93,49 @@
 
 **Completed:**
 - [x] pSEO Tier 8: Agentic BDR pages (24 pages)
+
+---
+
+### Week 3 - January 31, 2026
+
+**Focus: API & LLM Discoverability (10X Plan Week 1)**
+
+**Completed:**
+- [x] GTM Skills API v1 launched
+  - GET /api/v1/prompts (list with filtering, pagination, search)
+  - GET /api/v1/prompts/:id (single prompt)
+  - GET /api/v1/prompts/recommend (contextual recommendations)
+  - GET /api/v1/categories (list all categories)
+- [x] llms.txt created for LLM discoverability
+- [x] prompts.json dynamic index
+- [x] OpenAPI 3.0 specification
+- [x] JSON-LD structured data components
+- [x] JSON-LD added to role and industry pages
+
+**Commits:**
+- `0580a49` - feat: Add GTM Skills API v1 with LLM discoverability
+- `3f5903a` - feat: Add JSON-LD structured data for SEO and LLM discoverability
+
+**New Files:**
+- `src/lib/api-utils.ts` - API utility functions
+- `src/app/api/v1/prompts/route.ts` - Prompts list endpoint
+- `src/app/api/v1/prompts/[id]/route.ts` - Single prompt endpoint
+- `src/app/api/v1/prompts/recommend/route.ts` - Recommendations endpoint
+- `src/app/api/v1/categories/route.ts` - Categories endpoint
+- `src/app/prompts.json/route.ts` - Dynamic JSON index
+- `public/llms.txt` - LLM discovery file
+- `public/openapi.json` - OpenAPI specification
+- `src/components/json-ld.tsx` - Reusable JSON-LD components
+
+**Next:**
+- Browser Extension MVP (Week 2 of 10X plan)
+- HubSpot Plugin MVP (Week 4 of 10X plan)
+
+---
+
+### Week 2 (Previous) - January 30, 2026
+
+**Completed (continued):**
 - [x] Distribution system created (`/poasting` slash command)
 - [x] Content drafts: 5 Twitter, 6 LinkedIn, 4 Reddit
 - [x] Swipe file system for viral content analysis
