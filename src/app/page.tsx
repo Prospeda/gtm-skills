@@ -180,9 +180,9 @@ export default function Home() {
           <div className="max-w-7xl mx-auto flex items-center justify-center gap-3 text-sm">
             <span className="text-xl">🦞</span>
             <span className="text-white font-medium">
-              <span className="hidden sm:inline">NEW: </span>GTM Skills now available for OpenClaw
+              <span className="hidden sm:inline">NEW: </span>OpenClaw GTM Skills
             </span>
-            <span className="text-orange-400 hidden sm:inline">10 skills • 2,500+ prompts</span>
+            <span className="text-orange-400 hidden sm:inline">Research → Write → Send → Book → Track</span>
             <ArrowRight className="h-4 w-4 text-orange-400" />
           </div>
         </div>

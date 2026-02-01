@@ -1,81 +1,17 @@
 import { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Copy, Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { ArrowRight, Mail, Calendar, Database, BarChart3, Clock, Send } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "OpenClaw GTM Skills - The Ultimate Sales Toolkit",
+  title: "OpenClaw GTM Skills - Research. Write. Send. Book. Track.",
   description:
-    "One install. Complete sales toolkit. Cold emails, discovery, objections, LinkedIn, research — all inside your OpenClaw.",
+    "Complete GTM toolkit for OpenClaw. Enrich prospects, generate emails, send, book meetings, log to CRM — all from one command.",
   openGraph: {
-    title: "OpenClaw GTM Skills - The Ultimate Sales Toolkit",
-    description: "One install. Complete sales toolkit for OpenClaw.",
+    title: "OpenClaw GTM Skills",
+    description: "Research. Write. Send. Book. Track.",
     url: "https://gtm-skills.com/openclaw",
   },
 };
-
-const commands = [
-  { cmd: "gtm email", desc: "Cold email", example: "gtm email Sarah Chen, VP Sales at Acme" },
-  { cmd: "gtm reply", desc: "Handle objection", example: 'gtm reply "we don\'t have budget"' },
-  { cmd: "gtm questions", desc: "Discovery questions", example: "gtm questions VP of Engineering" },
-  { cmd: "gtm linkedin", desc: "Connection request", example: "gtm linkedin James Wilson, TechFlow" },
-  { cmd: "gtm prep", desc: "Meeting brief", example: "gtm prep CloudFirst - meeting with CTO" },
-  { cmd: "gtm research", desc: "Company intel", example: "gtm research DataSync" },
-  { cmd: "gtm call", desc: "Cold call script", example: "gtm call CTO at a fintech" },
-  { cmd: "gtm voicemail", desc: "Voicemail script", example: "gtm voicemail follow-up" },
-  { cmd: "gtm battlecard", desc: "Competitive intel", example: "gtm battlecard vs Salesforce" },
-  { cmd: "gtm sequence", desc: "Multi-touch cadence", example: "gtm sequence enterprise 14-day" },
-];
-
-const tonalities = [
-  {
-    name: "Direct",
-    flag: "--direct",
-    desc: "No fluff. Default.",
-    example: `Subject: Sales cycles
-
-Sarah - saw the Series B.
-
-Question: how are you handling longer sales cycles as you scale?
-
-We helped Datadog cut theirs by 30%.
-
-15 min to see if relevant?`,
-  },
-  {
-    name: "Blunt",
-    flag: "--blunt",
-    desc: "Shortest possible.",
-    example: `Subject: Quick question
-
-Sarah - are slow sales cycles costing you deals?
-
-If yes, let's talk. If no, ignore this.`,
-  },
-  {
-    name: "Challenger",
-    flag: "--challenger",
-    desc: "Push back, teach.",
-    example: `Subject: The real problem with Series B scaling
-
-Sarah - most companies focus on hiring more reps.
-
-The ones that win focus on cycle time first.
-
-Worth a contrarian take?`,
-  },
-  {
-    name: "Executive",
-    flag: "--exec",
-    desc: "C-suite brevity.",
-    example: `Subject: Acme sales velocity
-
-Sarah - quick hypothesis: your Q2 target requires 30% faster cycles.
-
-We've done this for 3 similar companies. 15 minutes to pressure-test?`,
-  },
-];
 
 export default function OpenClawPage() {
   return (
@@ -83,223 +19,271 @@ export default function OpenClawPage() {
       {/* Hero */}
       <section className="relative overflow-hidden border-b border-zinc-800">
         <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-red-500/10" />
-        <div className="relative mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="relative mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="text-center">
-            <div className="mb-6 inline-flex items-center gap-2 text-4xl">
-              <span>🦞</span>
-            </div>
-            <h1 className="mb-4 text-4xl font-bold tracking-tight text-white sm:text-5xl">
-              One Install. Done.
+            <div className="mb-4 text-4xl">🦞</div>
+            <h1 className="mb-3 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+              Research. Write. Send. Book. Track.
             </h1>
             <p className="mx-auto mb-8 max-w-xl text-lg text-zinc-400">
-              Complete sales toolkit for OpenClaw. Cold emails, discovery, objections, LinkedIn, research — everything.
+              Complete GTM toolkit for OpenClaw.
             </p>
 
-            {/* Install Command */}
-            <div className="mx-auto max-w-md rounded-xl border border-orange-500/30 bg-zinc-900 p-6">
+            <div className="mx-auto max-w-md rounded-xl border border-orange-500/30 bg-zinc-900 p-5">
               <code className="block text-lg text-orange-400 font-mono">
                 npx clawdhub install gtm-skills/gtm
               </code>
-              <p className="mt-3 text-sm text-zinc-500">That's it. You're done.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Quick Usage */}
-      <section className="py-16 border-b border-zinc-800">
+      {/* The Full Flow */}
+      <section className="py-12 border-b border-zinc-800">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-8 text-2xl font-bold text-white text-center">Usage</h2>
+          <h2 className="mb-6 text-xl font-bold text-white text-center">The Full Flow</h2>
 
-          <div className="grid gap-3 sm:grid-cols-2">
-            {commands.slice(0, 6).map((cmd) => (
-              <div
-                key={cmd.cmd}
-                className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-4 hover:border-zinc-700 transition-colors"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <code className="text-orange-400 font-mono text-sm">{cmd.cmd}</code>
-                  <span className="text-xs text-zinc-500">{cmd.desc}</span>
+          <div className="rounded-xl border border-zinc-800 bg-zinc-900/50 overflow-hidden">
+            <div className="border-b border-zinc-800 bg-zinc-900 px-4 py-2 flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-red-500" />
+              <div className="w-3 h-3 rounded-full bg-yellow-500" />
+              <div className="w-3 h-3 rounded-full bg-green-500" />
+              <span className="text-xs text-zinc-500 ml-2">OpenClaw</span>
+            </div>
+            <div className="p-4 font-mono text-sm space-y-4">
+              <div>
+                <span className="text-zinc-500">You:</span>{" "}
+                <span className="text-white">gtm prospect Sarah Chen at Acme Corp</span>
+              </div>
+
+              <div className="border-l-2 border-orange-500/50 pl-4 space-y-3">
+                <div className="text-orange-400 text-xs">🔍 ENRICHING...</div>
+                <div className="text-zinc-300">
+                  <div className="font-semibold">Sarah Chen | VP of Sales | Acme Corp</div>
+                  <div className="text-zinc-500 text-xs mt-1">
+                    📧 sarah.chen@acme.com • 🔗 linkedin.com/in/sarachen
+                  </div>
+                  <div className="text-zinc-400 text-xs mt-2">
+                    • Series B, $25M raised, 80 employees<br />
+                    • Hiring: 5 SDRs this week<br />
+                    • Tech: Salesforce, Outreach, Gong
+                  </div>
                 </div>
-                <code className="text-xs text-zinc-400 font-mono block truncate">
-                  {cmd.example}
-                </code>
+
+                <div className="text-orange-400 text-xs mt-4">📧 DRAFT READY:</div>
+                <div className="text-zinc-300 bg-black/50 rounded p-3">
+                  <div className="text-zinc-400 text-xs mb-2">Subject: SDR ramp time</div>
+                  Sarah - saw you&apos;re hiring 5 SDRs.<br /><br />
+                  Question: how are you thinking about ramp time as you scale?<br /><br />
+                  We helped Datadog cut theirs from 6 months to 3.<br /><br />
+                  15 min to see if relevant?<br />
+                  <span className="text-orange-400">→ calendly.com/you/15min</span>
+                </div>
+
+                <div className="flex gap-2 mt-3">
+                  <span className="px-3 py-1 bg-orange-500 text-white text-xs rounded">Send Now</span>
+                  <span className="px-3 py-1 bg-zinc-800 text-zinc-300 text-xs rounded border border-zinc-700">Edit</span>
+                  <span className="px-3 py-1 bg-zinc-800 text-zinc-300 text-xs rounded border border-zinc-700">Schedule</span>
+                  <span className="px-3 py-1 bg-zinc-800 text-zinc-300 text-xs rounded border border-zinc-700">Log to CRM</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Capabilities */}
+      <section className="py-12 border-b border-zinc-800 bg-zinc-900/30">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[
+              { icon: Database, title: "Enrich", desc: "Apollo, Clay, Clearbit", cmd: "gtm enrich [person]" },
+              { icon: Mail, title: "Generate", desc: "Emails, LinkedIn, calls", cmd: "gtm email [person]" },
+              { icon: Send, title: "Send", desc: "Gmail, Outlook", cmd: "gtm send" },
+              { icon: Calendar, title: "Book", desc: "Calendly, Cal.com", cmd: "gtm book" },
+              { icon: BarChart3, title: "Track", desc: "HubSpot, Salesforce", cmd: "gtm log [activity]" },
+              { icon: Clock, title: "Remind", desc: "Follow-up reminders", cmd: "gtm remind in 3 days" },
+            ].map((item) => (
+              <div key={item.title} className="rounded-lg border border-zinc-800 bg-black p-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <item.icon className="h-5 w-5 text-orange-400" />
+                  <span className="font-semibold text-white">{item.title}</span>
+                  <span className="text-xs text-zinc-500">{item.desc}</span>
+                </div>
+                <code className="text-xs text-orange-400 font-mono">{item.cmd}</code>
               </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          <div className="mt-4 grid gap-3 sm:grid-cols-4">
-            {commands.slice(6).map((cmd) => (
-              <div
-                key={cmd.cmd}
-                className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-3 text-center"
-              >
-                <code className="text-orange-400 font-mono text-sm">{cmd.cmd}</code>
-                <p className="text-xs text-zinc-500 mt-1">{cmd.desc}</p>
+      {/* Commands */}
+      <section className="py-12 border-b border-zinc-800">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-6 text-xl font-bold text-white text-center">Commands</h2>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            <div>
+              <h3 className="text-sm font-semibold text-zinc-400 mb-3">Generate</h3>
+              <div className="space-y-2 font-mono text-sm">
+                <div className="text-orange-400">gtm email</div>
+                <div className="text-orange-400">gtm reply</div>
+                <div className="text-orange-400">gtm questions</div>
+                <div className="text-orange-400">gtm linkedin</div>
+                <div className="text-orange-400">gtm prep</div>
+                <div className="text-orange-400">gtm call</div>
               </div>
-            ))}
+            </div>
+
+            <div>
+              <h3 className="text-sm font-semibold text-zinc-400 mb-3">Research</h3>
+              <div className="space-y-2 font-mono text-sm">
+                <div className="text-orange-400">gtm enrich</div>
+                <div className="text-orange-400">gtm research</div>
+                <div className="text-orange-400">gtm signals</div>
+                <div className="text-orange-400">gtm battlecard</div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-sm font-semibold text-zinc-400 mb-3">Execute</h3>
+              <div className="space-y-2 font-mono text-sm">
+                <div className="text-orange-400">gtm send</div>
+                <div className="text-orange-400">gtm book</div>
+                <div className="text-orange-400">gtm log</div>
+                <div className="text-orange-400">gtm remind</div>
+                <div className="text-orange-400">gtm track</div>
+                <div className="text-orange-400">gtm pipeline</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 rounded-lg border border-zinc-800 bg-zinc-900/50 p-4">
+            <h3 className="text-sm font-semibold text-white mb-3">Combo Commands</h3>
+            <div className="space-y-2 font-mono text-sm">
+              <div>
+                <span className="text-orange-400">gtm prospect [person] at [company]</span>
+                <span className="text-zinc-500 ml-3"># Enrich → Draft → Ready to send</span>
+              </div>
+              <div>
+                <span className="text-orange-400">gtm followup [person]</span>
+                <span className="text-zinc-500 ml-3"># Check history → Draft → Send</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Setup */}
+      <section className="py-12 border-b border-zinc-800 bg-zinc-900/30">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-6 text-xl font-bold text-white text-center">Setup</h2>
+
+          <div className="rounded-lg border border-zinc-800 bg-black p-4 font-mono text-sm space-y-4">
+            <div>
+              <div className="text-zinc-500"># Enrichment (pick one)</div>
+              <div className="text-orange-400">export APOLLO_API_KEY=your_key</div>
+              <div className="text-orange-400">export CLAY_API_KEY=your_key</div>
+            </div>
+
+            <div>
+              <div className="text-zinc-500"># Booking</div>
+              <div className="text-orange-400">export CALENDLY_URL=calendly.com/you/15min</div>
+            </div>
+
+            <div>
+              <div className="text-zinc-500"># CRM</div>
+              <div className="text-orange-400">export HUBSPOT_API_KEY=your_key</div>
+            </div>
+
+            <div>
+              <div className="text-zinc-500"># Email sending</div>
+              <div className="text-orange-400">export GMAIL_ENABLED=true</div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Tonalities */}
-      <section className="py-16 border-b border-zinc-800 bg-zinc-900/30">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl font-bold text-white mb-2">Tonalities</h2>
-            <p className="text-zinc-400">Choose your style. Default is direct — no fluff.</p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2">
-            {tonalities.map((tone) => (
-              <div
-                key={tone.name}
-                className="rounded-xl border border-zinc-800 bg-black overflow-hidden"
-              >
-                <div className="border-b border-zinc-800 bg-zinc-900 px-4 py-3 flex items-center justify-between">
-                  <div>
-                    <span className="font-semibold text-white">{tone.name}</span>
-                    <code className="ml-2 text-xs text-orange-400">{tone.flag}</code>
-                  </div>
-                  <span className="text-xs text-zinc-500">{tone.desc}</span>
-                </div>
-                <pre className="p-4 text-sm text-zinc-300 font-mono whitespace-pre-wrap overflow-x-auto">
-                  {tone.example}
-                </pre>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Frameworks */}
-      <section className="py-16 border-b border-zinc-800">
+      <section className="py-12 border-b border-zinc-800">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-6 text-2xl font-bold text-white text-center">Frameworks</h2>
+          <h2 className="mb-6 text-xl font-bold text-white text-center">Tonalities</h2>
 
           <div className="flex flex-wrap justify-center gap-3 mb-8">
-            {["MEDDPICC", "SPIN", "Challenger", "Sandler", "Gap Selling", "BANT"].map((fw) => (
-              <span
-                key={fw}
-                className="rounded-full border border-zinc-700 bg-zinc-800 px-4 py-2 text-sm text-zinc-300"
-              >
-                {fw}
-              </span>
-            ))}
-          </div>
-
-          <div className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-4 font-mono text-sm">
-            <div className="text-zinc-400 mb-2"># Use any framework:</div>
-            <div className="text-orange-400">gtm questions --meddpicc VP of Engineering</div>
-            <div className="text-orange-400">gtm questions --spin CFO</div>
-            <div className="text-orange-400">gtm questions --challenger Head of Sales</div>
-          </div>
-        </div>
-      </section>
-
-      {/* Full Command Reference */}
-      <section className="py-16 border-b border-zinc-800 bg-zinc-900/30">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-          <h2 className="mb-8 text-2xl font-bold text-white text-center">All Commands</h2>
-
-          <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-3">
             {[
-              { cmd: "gtm email", desc: "Cold email" },
-              { cmd: "gtm followup", desc: "Follow-up email" },
-              { cmd: "gtm breakup", desc: "Final attempt" },
-              { cmd: "gtm linkedin", desc: "Connection request" },
-              { cmd: "gtm inmail", desc: "LinkedIn InMail" },
-              { cmd: "gtm questions", desc: "Discovery questions" },
-              { cmd: "gtm reply", desc: "Handle objection" },
-              { cmd: "gtm prep", desc: "Meeting brief" },
-              { cmd: "gtm research", desc: "Company intel" },
-              { cmd: "gtm call", desc: "Cold call script" },
-              { cmd: "gtm voicemail", desc: "Voicemail script" },
-              { cmd: "gtm battlecard", desc: "Competitive intel" },
-              { cmd: "gtm sequence", desc: "Outreach cadence" },
-            ].map((item) => (
-              <div
-                key={item.cmd}
-                className="flex items-center justify-between rounded-lg border border-zinc-800 bg-black px-4 py-3"
-              >
-                <code className="text-orange-400 font-mono text-sm">{item.cmd}</code>
-                <span className="text-xs text-zinc-500">{item.desc}</span>
+              { flag: "--direct", desc: "No fluff (default)" },
+              { flag: "--blunt", desc: "Shortest possible" },
+              { flag: "--challenger", desc: "Push back, teach" },
+              { flag: "--exec", desc: "C-suite brevity" },
+              { flag: "--friendly", desc: "Add warmth" },
+            ].map((t) => (
+              <div key={t.flag} className="rounded-full border border-zinc-700 bg-zinc-800 px-4 py-2 text-sm">
+                <code className="text-orange-400">{t.flag}</code>
+                <span className="text-zinc-500 ml-2">{t.desc}</span>
               </div>
             ))}
           </div>
 
-          <div className="mt-8 text-center">
-            <h3 className="text-lg font-semibold text-white mb-4">Flags</h3>
-            <div className="flex flex-wrap justify-center gap-2">
-              {[
-                { flag: "--direct", desc: "No fluff" },
-                { flag: "--blunt", desc: "Shortest" },
-                { flag: "--challenger", desc: "Push back" },
-                { flag: "--exec", desc: "C-suite" },
-                { flag: "--friendly", desc: "Add warmth" },
-                { flag: "--meddpicc", desc: "Framework" },
-                { flag: "--spin", desc: "Framework" },
-              ].map((item) => (
-                <div
-                  key={item.flag}
-                  className="rounded-full border border-zinc-700 bg-zinc-800 px-3 py-1 text-sm"
-                >
-                  <code className="text-orange-400">{item.flag}</code>
-                  <span className="text-zinc-500 ml-2">{item.desc}</span>
-                </div>
-              ))}
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="rounded-lg border border-zinc-800 bg-black overflow-hidden">
+              <div className="border-b border-zinc-800 bg-zinc-900 px-4 py-2">
+                <span className="text-white font-semibold">Direct</span>
+                <span className="text-zinc-500 text-xs ml-2">(default)</span>
+              </div>
+              <pre className="p-4 text-sm text-zinc-300 font-mono whitespace-pre-wrap">
+{`Subject: Sales cycles
+
+Sarah - saw the Series B.
+
+How are you handling longer sales cycles as you scale?
+
+We helped Datadog cut theirs by 30%.
+
+15 min to see if relevant?`}
+              </pre>
+            </div>
+
+            <div className="rounded-lg border border-zinc-800 bg-black overflow-hidden">
+              <div className="border-b border-zinc-800 bg-zinc-900 px-4 py-2">
+                <span className="text-white font-semibold">Blunt</span>
+              </div>
+              <pre className="p-4 text-sm text-zinc-300 font-mono whitespace-pre-wrap">
+{`Subject: Quick question
+
+Sarah - are slow sales cycles costing you deals?
+
+If yes, let's talk. If no, ignore this.`}
+              </pre>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-16">
+      <section className="py-12">
         <div className="mx-auto max-w-2xl px-4 text-center sm:px-6 lg:px-8">
-          <h2 className="mb-4 text-2xl font-bold text-white">Get Started</h2>
-
           <div className="rounded-xl border border-orange-500/30 bg-zinc-900 p-6 mb-6">
             <code className="block text-lg text-orange-400 font-mono">
               npx clawdhub install gtm-skills/gtm
             </code>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex items-center justify-center gap-4">
             <a
               href="https://github.com/Prospeda/gtm-skills/tree/main/openclaw-skills"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg bg-zinc-800 border border-zinc-700 px-6 py-3 font-medium text-white hover:bg-zinc-700 transition-colors"
+              className="inline-flex items-center gap-2 rounded-lg bg-zinc-800 border border-zinc-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-zinc-700 transition-colors"
             >
-              View on GitHub
+              GitHub
             </a>
             <Link
               href="/prompts"
-              className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 text-zinc-400 hover:text-white transition-colors text-sm"
             >
-              Browse all prompts
+              Browse prompts
               <ArrowRight className="h-4 w-4" />
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <section className="border-t border-zinc-800 py-8">
-        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-zinc-500">
-            <a href="https://openclaw.ai" target="_blank" rel="noopener noreferrer" className="hover:text-white">
-              OpenClaw.ai
-            </a>
-            <Link href="/developers" className="hover:text-white">
-              API Docs
-            </Link>
-            <Link href="/prompts" className="hover:text-white">
-              Prompts
-            </Link>
-            <a href="https://github.com/Prospeda/gtm-skills" target="_blank" rel="noopener noreferrer" className="hover:text-white">
-              GitHub
-            </a>
           </div>
         </div>
       </section>
