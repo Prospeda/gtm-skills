@@ -17,7 +17,10 @@ import {
   Plus,
   ExternalLink,
   Share2,
+  DollarSign,
+  BarChart3,
 } from 'lucide-react';
+import { OutcomeModal } from '@/components/outcome-modal';
 
 interface LeaderboardPrompt {
   rank: number;
@@ -101,6 +104,7 @@ export default function LeaderboardPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [userVotes, setUserVotes] = useState<Record<string, 'up' | 'down' | null>>({});
   const [fingerprint, setFingerprint] = useState('');
+  const [outcomePrompt, setOutcomePrompt] = useState<{ id: string; title: string } | null>(null);
 
   // Generate fingerprint on mount
   useEffect(() => {
@@ -303,6 +307,12 @@ export default function LeaderboardPage() {
               ))}
             </select>
 
+            <Link href="/leaderboard/impact">
+              <Button variant="outline" className="gap-2">
+                <BarChart3 className="w-4 h-4" />
+                Impact
+              </Button>
+            </Link>
             <Link href="/leaderboard/submit">
               <Button className="gap-2 bg-orange-500 hover:bg-orange-600">
                 <Plus className="w-4 h-4" />
@@ -425,7 +435,7 @@ export default function LeaderboardPage() {
                             </span>
                           ))}
                         </div>
-                        <div className="flex gap-3 mt-4">
+                        <div className="flex flex-wrap gap-3 mt-4">
                           <Button
                             onClick={() => handleCopy(prompt)}
                             className="bg-orange-500 hover:bg-orange-600"
@@ -443,6 +453,14 @@ export default function LeaderboardPage() {
                               Open in Claude
                             </Button>
                           </a>
+                          <Button
+                            variant="outline"
+                            onClick={() => setOutcomePrompt({ id: prompt.id, title: prompt.title })}
+                            className="border-green-500/50 text-green-400 hover:bg-green-500/10"
+                          >
+                            <Trophy className="w-4 h-4 mr-2" />
+                            Report Win
+                          </Button>
                         </div>
                       </div>
                     )}
@@ -459,14 +477,33 @@ export default function LeaderboardPage() {
           <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
             Submit your best GTM prompts to the leaderboard. Get recognized by the community.
           </p>
-          <Link href="/leaderboard/submit">
-            <Button size="lg" className="bg-orange-500 hover:bg-orange-600">
-              <Plus className="w-4 h-4 mr-2" />
-              Submit Your Prompt
-            </Button>
-          </Link>
+          <div className="flex gap-4 justify-center">
+            <Link href="/leaderboard/submit">
+              <Button size="lg" className="bg-orange-500 hover:bg-orange-600">
+                <Plus className="w-4 h-4 mr-2" />
+                Submit Your Prompt
+              </Button>
+            </Link>
+            <Link href="/leaderboard/impact">
+              <Button size="lg" variant="outline">
+                <DollarSign className="w-4 h-4 mr-2" />
+                View Impact
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
+
+      {/* Outcome Modal */}
+      {outcomePrompt && (
+        <OutcomeModal
+          promptId={outcomePrompt.id}
+          promptTitle={outcomePrompt.title}
+          isOpen={!!outcomePrompt}
+          onClose={() => setOutcomePrompt(null)}
+          onSuccess={() => fetchLeaderboard()}
+        />
+      )}
     </div>
   );
 }
