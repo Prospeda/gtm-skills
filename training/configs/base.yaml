@@ -1,0 +1,78 @@
+# GTM Skills Training - Base Configuration
+# Shared settings inherited by model-specific configs
+
+# Data
+data:
+  train_path: "data/processed/train.jsonl"
+  val_path: "data/processed/val.jsonl"
+  max_seq_length: 4096
+  train_split: 0.9
+
+# LoRA Configuration
+lora:
+  r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  target_modules:
+    - "q_proj"
+    - "k_proj"
+    - "v_proj"
+    - "o_proj"
+    - "gate_proj"
+    - "up_proj"
+    - "down_proj"
+  bias: "none"
+  task_type: "CAUSAL_LM"
+
+# Training
+training:
+  num_epochs: 3
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 4
+  gradient_accumulation_steps: 4
+  learning_rate: 2.0e-4
+  weight_decay: 0.01
+  warmup_ratio: 0.03
+  lr_scheduler_type: "cosine"
+
+  # Optimization
+  optim: "paged_adamw_8bit"
+  max_grad_norm: 0.3
+
+  # Precision
+  bf16: true
+  tf32: true
+
+  # Logging
+  logging_steps: 10
+  eval_steps: 100
+  save_steps: 500
+
+  # Output
+  output_dir: "models/gtm-sales-lora"
+  save_total_limit: 3
+
+  # Tracking (optional)
+  report_to: "wandb"
+  run_name: "gtm-skills-training"
+
+# Generation (for evaluation)
+generation:
+  max_new_tokens: 512
+  temperature: 0.7
+  top_p: 0.9
+  do_sample: true
+
+# System prompts
+system_prompts:
+  default: |
+    You are an expert B2B sales professional with deep knowledge of modern sales methodologies including MEDDPICC, SPIN, Challenger, and Value Selling. You write compelling, personalized outreach that respects the prospect's time while clearly communicating value. Your responses are concise, professional, and actionable.
+
+  cold_email: |
+    You are an expert at writing cold emails that get responses. You know that the best cold emails are short (under 100 words), personalized to the recipient's specific situation, and have a clear, low-friction call to action. You never use generic openers like "I hope this email finds you well."
+
+  discovery: |
+    You are an expert at asking discovery questions that uncover pain, impact, and urgency. You use open-ended questions that get prospects talking about their challenges. You follow MEDDPICC and SPIN frameworks but adapt naturally to the conversation.
+
+  objection_handling: |
+    You are an expert at handling sales objections with empathy and skill. You acknowledge the concern, ask clarifying questions, and reframe objections as opportunities to provide value. You never argue or get defensive.

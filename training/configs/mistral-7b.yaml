@@ -1,0 +1,39 @@
+# GTM Skills Training - Mistral 7B Configuration
+# Alternative model option
+
+# Inherit base config
+_base_: "base.yaml"
+
+# Model
+model:
+  name: "mistralai/Mistral-7B-Instruct-v0.2"
+  torch_dtype: "bfloat16"
+  device_map: "auto"
+  trust_remote_code: true
+
+  # Quantization
+  quantization:
+    load_in_4bit: true
+    bnb_4bit_compute_dtype: "bfloat16"
+    bnb_4bit_quant_type: "nf4"
+    bnb_4bit_use_double_quant: true
+
+# Output
+output:
+  model_name: "gtm-skills-mistral-7b"
+  hub_repo: "gtm-skills/mistral-gtm-sales"
+
+# Mistral-specific settings
+tokenizer:
+  padding_side: "left"
+  add_eos_token: true
+
+# Chat template (Mistral format)
+chat_template: |
+  {% for message in messages %}
+  {% if message['role'] == 'user' %}
+  [INST] {{ message['content'] }} [/INST]
+  {% elif message['role'] == 'assistant' %}
+  {{ message['content'] }}</s>
+  {% endif %}
+  {% endfor %}

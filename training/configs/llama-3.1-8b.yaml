@@ -1,0 +1,48 @@
+# GTM Skills Training - Llama 3.1 8B Configuration
+# Primary training target (recommended)
+
+# Inherit base config
+_base_: "base.yaml"
+
+# Model
+model:
+  name: "meta-llama/Llama-3.1-8B-Instruct"
+  torch_dtype: "bfloat16"
+  device_map: "auto"
+  trust_remote_code: true
+
+  # Quantization (set to null for full precision)
+  quantization:
+    load_in_4bit: true
+    bnb_4bit_compute_dtype: "bfloat16"
+    bnb_4bit_quant_type: "nf4"
+    bnb_4bit_use_double_quant: true
+
+# Output
+output:
+  model_name: "gtm-skills-llama-3.1-8b"
+  hub_repo: "gtm-skills/llama-3.1-gtm-sales"
+
+# Llama-specific settings
+tokenizer:
+  padding_side: "right"
+  add_eos_token: true
+  add_bos_token: true
+
+# Chat template (Llama 3.1 format)
+chat_template: |
+  {% for message in messages %}
+  {% if message['role'] == 'system' %}
+  <|begin_of_text|><|start_header_id|>system<|end_header_id|>
+  {{ message['content'] }}<|eot_id|>
+  {% elif message['role'] == 'user' %}
+  <|start_header_id|>user<|end_header_id|>
+  {{ message['content'] }}<|eot_id|>
+  {% elif message['role'] == 'assistant' %}
+  <|start_header_id|>assistant<|end_header_id|>
+  {{ message['content'] }}<|eot_id|>
+  {% endif %}
+  {% endfor %}
+  {% if add_generation_prompt %}
+  <|start_header_id|>assistant<|end_header_id|>
+  {% endif %}

@@ -1,0 +1,33 @@
+# GTM Skills Model Training Requirements
+# Install: pip install -r requirements.txt
+
+# Core ML
+torch>=2.1.0
+transformers>=4.36.0
+accelerate>=0.25.0
+bitsandbytes>=0.41.0
+
+# LoRA/PEFT
+peft>=0.7.0
+
+# Training
+trl>=0.7.0
+datasets>=2.15.0
+wandb>=0.16.0
+
+# Data processing
+pandas>=2.0.0
+numpy>=1.24.0
+pyyaml>=6.0
+
+# Hugging Face
+huggingface-hub>=0.19.0
+
+# Evaluation
+evaluate>=0.4.0
+rouge-score>=0.1.2
+
+# Utilities
+tqdm>=4.66.0
+rich>=13.0.0
+typer>=0.9.0
