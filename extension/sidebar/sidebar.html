@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GTM Skills</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: #18181b;
+      color: #fafafa;
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #27272a;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .logo svg {
+      width: 20px;
+      height: 20px;
+      color: #f97316;
+    }
+
+    .context-badge {
+      font-size: 11px;
+      padding: 4px 8px;
+      background: #27272a;
+      border-radius: 12px;
+      color: #a1a1aa;
+    }
+
+    .search-container {
+      margin-bottom: 16px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 10px 12px;
+      background: #27272a;
+      border: 1px solid #3f3f46;
+      border-radius: 8px;
+      color: #fafafa;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: #f97316;
+    }
+
+    .search-input::placeholder {
+      color: #71717a;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #a1a1aa;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+
+    .prompts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .prompt-card {
+      background: #27272a;
+      border-radius: 12px;
+      padding: 14px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+      border: 1px solid transparent;
+    }
+
+    .prompt-card:hover {
+      background: #3f3f46;
+      transform: translateY(-1px);
+    }
+
+    .prompt-card.expanded {
+      border-color: #f97316;
+    }
+
+    .prompt-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .prompt-title {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .relevance-badge {
+      flex-shrink: 0;
+      font-size: 10px;
+      padding: 2px 6px;
+      background: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
+      border-radius: 10px;
+      color: white;
+      font-weight: 600;
+    }
+
+    .prompt-description {
+      font-size: 12px;
+      color: #a1a1aa;
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .prompt-content {
+      display: none;
+      margin-top: 12px;
+      padding: 12px;
+      background: #18181b;
+      border-radius: 8px;
+      font-family: 'SF Mono', Monaco, 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      color: #d4d4d8;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .prompt-card.expanded .prompt-content {
+      display: block;
+    }
+
+    .prompt-actions {
+      display: none;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .prompt-card.expanded .prompt-actions {
+      display: flex;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #3f3f46;
+      color: #fafafa;
+    }
+
+    .btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 8px;
+    }
+
+    .tag {
+      font-size: 10px;
+      padding: 2px 6px;
+      background: #3f3f46;
+      border-radius: 4px;
+      color: #a1a1aa;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px 20px;
+      color: #71717a;
+    }
+
+    .loading-spinner {
+      width: 24px;
+      height: 24px;
+      border: 2px solid #3f3f46;
+      border-top-color: #f97316;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 12px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #71717a;
+    }
+
+    .empty-state-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .footer {
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid #27272a;
+      text-align: center;
+    }
+
+    .footer a {
+      color: #f97316;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    .copied-toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #22c55e;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    .copied-toast.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      GTM Skills
+    </div>
+    <span class="context-badge" id="context-badge">Loading...</span>
+  </div>
+
+  <div class="search-container">
+    <input type="text" class="search-input" id="search-input" placeholder="Search prompts...">
+  </div>
+
+  <div class="section-title" id="section-title">Recommended Prompts</div>
+
+  <div id="prompts-container" class="prompts-list">
+    <div class="loading">
+      <div class="loading-spinner"></div>
+      <div>Loading prompts...</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="https://gtm-skills.com" target="_blank">View all 2,500+ prompts at gtm-skills.com</a>
+  </div>
+
+  <div class="copied-toast" id="copied-toast">Copied to clipboard!</div>
+
+  <script src="sidebar.js"></script>
+</body>
+</html>
