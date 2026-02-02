@@ -51,6 +51,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/templates',
     '/projects',
     '/signals',
+    '/openclaw',
+    '/developers',
+    '/voice-templates',
   ];
 
   // All 24 tonality pages
