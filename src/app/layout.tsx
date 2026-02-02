@@ -31,7 +31,7 @@ const organizationJsonLd = {
   url: 'https://gtm-skills.com',
   logo: 'https://gtm-skills.com/logo.svg',
   sameAs: [
-    'https://github.com/Prospeda/gtm-skills',
+    'https://github.com/gtm-skills/gtm',
   ],
 };
 

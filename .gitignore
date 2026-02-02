@@ -33,3 +33,4 @@ out/
 *.log
 npm-debug.log*
 .vercel
+gtm-repo-export/
