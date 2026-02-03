@@ -18,6 +18,8 @@ import {
   FileCode,
   Terminal,
   Palette,
+  Users,
+  Workflow,
 } from 'lucide-react';
 
 interface NavItem {
@@ -35,10 +37,18 @@ interface NavItem {
 const navigation: NavItem[] = [
   { name: 'Prompts', href: '/prompts' },
   {
+    name: 'Agents',
+    href: '/agents',
+    children: [
+      { name: 'Meet the Team', href: '/agents', icon: Users, description: 'Scout, Writer, Rep, Closer' },
+      { name: 'Orchestrator API', href: '/developers#orchestrator', icon: Workflow, description: 'Route tasks to agents' },
+      { name: 'OpenClaw Setup', href: '/openclaw', icon: Terminal, description: 'Install the full team' },
+    ],
+  },
+  {
     name: 'Tools',
     href: '/free-tools',
     children: [
-      { name: 'OpenClaw Skills', href: '/openclaw', icon: Terminal, description: 'GTM toolkit for OpenClaw' },
       { name: 'MCP Server', href: '/free-tools/mcp-server', icon: Bot, description: 'Claude Desktop tools' },
       { name: 'Browser Extension', href: '/download', icon: Globe, description: 'LinkedIn & Gmail integration' },
       { name: 'Tonalities', href: '/free-tools/tonalities', icon: Palette, description: '24 writing styles' },
@@ -57,8 +67,8 @@ const navigation: NavItem[] = [
     href: '/developers',
     children: [
       { name: 'API Docs', href: '/developers', icon: Code, description: 'REST API reference' },
+      { name: 'Agents API', href: '/developers#agents-api', icon: Users, description: 'Agent skills & orchestrator' },
       { name: 'OpenAPI Spec', href: '/openapi.json', icon: FileCode, description: 'Download spec' },
-      { name: 'llms.txt', href: '/llms.txt', icon: Bot, description: 'Agent discovery' },
       { name: 'GitHub', href: 'https://github.com/Prospeda/gtm-skills', icon: Github, description: 'Source code' },
     ],
   },

@@ -4,7 +4,7 @@
  */
 
 import Link from 'next/link';
-import { Code, FileCode, Bot, Github, ArrowRight, Copy, ExternalLink, Zap } from 'lucide-react';
+import { Code, FileCode, Bot, Github, ArrowRight, Copy, ExternalLink, Zap, Users, Workflow } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
@@ -36,6 +36,31 @@ const endpoints = [
     params: 'role, industry, stage, limit',
     category: 'Prompts',
   },
+  // Agents
+  {
+    method: 'GET',
+    path: '/api/v1/agents',
+    description: 'List all agents (Scout, Writer, Rep, Closer)',
+    params: 'none',
+    category: 'Agents',
+    isNew: true,
+  },
+  {
+    method: 'GET',
+    path: '/api/v1/agents/:id/skill',
+    description: 'Get SKILL.md for a specific agent',
+    params: 'id (scout, writer, rep, closer)',
+    category: 'Agents',
+    isNew: true,
+  },
+  {
+    method: 'POST',
+    path: '/api/v1/agents/orchestrate',
+    description: 'Route a message to the right agent(s)',
+    params: 'message, include_skills',
+    category: 'Agents',
+    isNew: true,
+  },
   // OpenClaw
   {
     method: 'GET',
@@ -43,7 +68,6 @@ const endpoints = [
     description: 'List all OpenClaw GTM skills with commands and setup',
     params: 'none',
     category: 'OpenClaw',
-    isNew: true,
   },
   // Agentic BDR
   {
@@ -196,8 +220,98 @@ export default function DevelopersPage() {
         </div>
       </section>
 
+      {/* Agents API */}
+      <section id="agents-api" className="py-12 border-t border-zinc-800 bg-zinc-900/30">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="flex items-center gap-3 mb-6">
+            <Users className="h-6 w-6 text-orange-400" />
+            <h2 className="text-2xl font-bold">Agents API</h2>
+            <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30">NEW</Badge>
+          </div>
+
+          <p className="text-zinc-400 mb-6">
+            Four AI agents for your sales team: <strong className="text-blue-400">Scout</strong> (research),
+            <strong className="text-yellow-400"> Writer</strong> (copy),
+            <strong className="text-green-400"> Rep</strong> (outreach),
+            <strong className="text-purple-400"> Closer</strong> (deals).
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-4 mb-8">
+            {/* List Agents */}
+            <div className="bg-zinc-900 rounded-xl border border-zinc-800 overflow-hidden">
+              <div className="px-4 py-3 border-b border-zinc-800 flex items-center justify-between">
+                <span className="text-xs text-zinc-500">List all agents</span>
+                <Badge className="font-mono text-xs bg-emerald-500/20 text-emerald-400 border-emerald-500/30">GET</Badge>
+              </div>
+              <pre className="p-4 text-sm overflow-x-auto">
+                <code className="text-emerald-400 font-mono">curl https://gtm-skills.com/api/v1/agents</code>
+              </pre>
+            </div>
+
+            {/* Get Skill */}
+            <div className="bg-zinc-900 rounded-xl border border-zinc-800 overflow-hidden">
+              <div className="px-4 py-3 border-b border-zinc-800 flex items-center justify-between">
+                <span className="text-xs text-zinc-500">Get agent SKILL.md</span>
+                <Badge className="font-mono text-xs bg-emerald-500/20 text-emerald-400 border-emerald-500/30">GET</Badge>
+              </div>
+              <pre className="p-4 text-sm overflow-x-auto">
+                <code className="text-emerald-400 font-mono">curl https://gtm-skills.com/api/v1/agents/writer/skill</code>
+              </pre>
+            </div>
+          </div>
+
+          {/* Orchestrator */}
+          <div id="orchestrator" className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-6">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-lg bg-orange-500/20 flex items-center justify-center flex-shrink-0">
+                <Workflow className="h-6 w-6 text-orange-400" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-white mb-2">Orchestrator API</h3>
+                <p className="text-zinc-400 text-sm mb-4">
+                  Route any message to the right agent automatically. The orchestrator analyzes intent
+                  and returns the best agent(s) to handle the task.
+                </p>
+                <div className="bg-black/50 rounded-lg p-4 mb-4 overflow-x-auto">
+                  <pre className="text-sm">
+                    <code className="text-orange-400 font-mono">{`curl -X POST "https://gtm-skills.com/api/v1/agents/orchestrate" \\
+  -H "Content-Type: application/json" \\
+  -d '{"message": "Find SaaS companies and write cold emails"}'`}</code>
+                  </pre>
+                </div>
+                <div className="bg-black/30 rounded-lg p-4 overflow-x-auto">
+                  <pre className="text-sm">
+                    <code className="text-zinc-300 font-mono">{`{
+  "routing": {
+    "primary": { "name": "Writer", "skill_url": "..." },
+    "secondary": { "name": "Scout", "skill_url": "..." },
+    "confidence": "high"
+  },
+  "suggested_prompt": "@Writer: Find SaaS companies..."
+}`}</code>
+                  </pre>
+                </div>
+                <div className="flex gap-3 mt-4">
+                  <Link href="/agents">
+                    <Button size="sm" className="gap-2 bg-orange-500 hover:bg-orange-600">
+                      <Users className="h-4 w-4" />
+                      Meet the Agents
+                    </Button>
+                  </Link>
+                  <Link href="/openclaw">
+                    <Button variant="outline" size="sm" className="gap-2 border-orange-500/30 text-orange-400 hover:bg-orange-500/10">
+                      OpenClaw Setup
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* API Endpoints */}
-      <section className="py-12 border-t border-zinc-800 bg-zinc-900/30">
+      <section className="py-12 border-t border-zinc-800">
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-2xl font-bold mb-6">API Endpoints</h2>
 
