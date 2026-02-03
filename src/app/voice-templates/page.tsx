@@ -20,13 +20,14 @@ import {
   MessageSquare,
   Calendar,
   ArrowRight,
+  Voicemail,
 } from 'lucide-react';
 
 interface VoiceTemplate {
   id: string;
   name: string;
   description: string;
-  category: 'cold_call' | 'discovery' | 'demo' | 'follow_up' | 'qualification';
+  category: 'cold_call' | 'discovery' | 'demo' | 'follow_up' | 'qualification' | 'voicemail';
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   duration_minutes: number;
   variables: string[];
@@ -39,6 +40,7 @@ const categoryInfo: Record<string, { icon: typeof Phone; color: string; label: s
   demo: { icon: Play, color: 'text-green-400', label: 'Demo' },
   follow_up: { icon: MessageSquare, color: 'text-amber-400', label: 'Follow Up' },
   qualification: { icon: Target, color: 'text-orange-400', label: 'Qualification' },
+  voicemail: { icon: Voicemail, color: 'text-pink-400', label: 'Voicemail' },
 };
 
 const difficultyColors: Record<string, string> = {
@@ -79,7 +81,7 @@ export default function VoiceTemplatesPage() {
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  const categories = ['cold_call', 'discovery', 'demo', 'follow_up', 'qualification'];
+  const categories = ['cold_call', 'voicemail', 'discovery', 'demo', 'follow_up', 'qualification'];
 
   return (
     <div className="py-12 md:py-20">

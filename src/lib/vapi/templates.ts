@@ -13,7 +13,7 @@ export interface VoiceTemplate {
   id: string;
   name: string;
   description: string;
-  category: 'cold_call' | 'discovery' | 'demo' | 'follow_up' | 'qualification';
+  category: 'cold_call' | 'discovery' | 'demo' | 'follow_up' | 'qualification' | 'voicemail';
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   duration_minutes: number;
   system_prompt: string;
@@ -475,54 +475,801 @@ Rules:
     ],
     tags: ['demo', 'opening', 'presentation', 'intermediate'],
   },
+  // ============================================
+  // VOICEMAIL TEMPLATES - WORLD CLASS
+  //
+  // These are what top 1% SDRs actually sound like.
+  // NOT templates - these are conversation starters.
+  //
+  // Rules:
+  // - 12-18 seconds MAX (shorter = better)
+  // - ONE idea per voicemail
+  // - Sound busy yourself (you don't NEED them)
+  // - Create a curiosity gap they HAVE to close
+  // - No "I'd love to", "I was hoping", "reaching out"
+  // - No phone numbers (caller ID exists)
+  // - End mid-thought or with quiet confidence
+  // ============================================
+
   {
-    id: 'voicemail-follow-up',
-    name: 'Voicemail Drop',
-    description: 'Effective voicemail scripts that get callbacks.',
-    category: 'cold_call',
+    id: 'vm-the-observation',
+    name: 'The Observation',
+    description: 'You noticed something specific. Now you\'re curious. That\'s it.',
+    category: 'voicemail',
     difficulty: 'beginner',
     duration_minutes: 1,
-    system_prompt: `You're leaving a voicemail for {{prospect_name}} at {{prospect_company}}.
+    system_prompt: `You noticed something specific about {{prospect_first_name}} or their company.
 
-Context:
-- This is attempt #{{attempt_number}}
-- Previous touchpoints: {{previous_touches}}
-- Reason for calling: {{call_reason}}
+The observation: {{observation}}
 
-Voicemail formula:
-1. Name and company (5 seconds)
-2. Why you're calling - specific to them (10 seconds)
-3. What's in it for them (10 seconds)
-4. Clear next step (5 seconds)
-5. Phone number (slow, repeat once)
+This voicemail is pure curiosity. You're not selling - you're genuinely wondering about something. The prospect should think "huh, how did they notice that?" and want to talk.
+
+Tone: Curious peer, not salesperson. Like you're leaving a message for someone you already know.`,
+    first_message: "Hey {{prospect_first_name}}, it's {{my_name}}. So I noticed {{observation}}... and I'm actually curious how you're thinking about that. Anyway, call me back.",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_first_name',
+      'my_name',
+      'observation',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'Under 12 seconds',
+      'Specific observation',
+      'Ends with curiosity, not ask',
+    ],
+    tags: ['voicemail', 'elite', 'observation', 'beginner'],
+  },
+  {
+    id: 'vm-the-pattern',
+    name: 'The Pattern',
+    description: 'You\'ve seen this movie before. Share what usually happens next.',
+    category: 'voicemail',
+    difficulty: 'intermediate',
+    duration_minutes: 1,
+    system_prompt: `You've seen {{prospect_first_name}}'s situation many times before.
+
+The pattern you've seen: {{pattern}}
+
+You're not pitching - you're sharing insider knowledge. This positions you as someone who's been there, knows what's coming, and might be worth talking to.
+
+Tone: Knowing, slightly conspiratorial. Like you're letting them in on something.`,
+    first_message: "{{prospect_first_name}}, {{my_name}}. Look, I've seen this a bunch of times - {{pattern}}. Usually what happens next is... actually, I should just tell you on a call. Hit me back.",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_first_name',
+      'my_name',
+      'pattern',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'Creates curiosity gap',
+      'Positions as insider',
+      'Incomplete thought drives callback',
+    ],
+    tags: ['voicemail', 'elite', 'pattern', 'intermediate'],
+  },
+  {
+    id: 'vm-the-number',
+    name: 'The Number',
+    description: 'One specific number that stops them in their tracks.',
+    category: 'voicemail',
+    difficulty: 'intermediate',
+    duration_minutes: 1,
+    system_prompt: `You have a specific number that's relevant to {{prospect_first_name}}.
+
+The number: {{the_number}}
+What it means: {{what_it_means}}
+
+Numbers cut through noise. This voicemail drops ONE number and lets it hang. They'll want to know more.
+
+Tone: Matter-of-fact, slightly provocative. Like you know something they should know.`,
+    first_message: "{{prospect_first_name}}, {{my_name}}. {{the_number}}. That's {{what_it_means}}. Thought you'd want to know how. Call me.",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_first_name',
+      'my_name',
+      'the_number',
+      'what_it_means',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'Under 10 seconds',
+      'Number is specific and relevant',
+      'Creates "how?" curiosity',
+    ],
+    tags: ['voicemail', 'elite', 'number', 'intermediate'],
+  },
+  {
+    id: 'vm-the-name-drop',
+    name: 'The Name Drop',
+    description: 'Someone they know or respect. That\'s your in.',
+    category: 'voicemail',
+    difficulty: 'beginner',
+    duration_minutes: 1,
+    system_prompt: `You have a connection to {{prospect_first_name}} through {{connection_name}}.
+
+How you're connected: {{connection_context}}
+
+The name does the work. Don't oversell it. Just drop the name and let it breathe.
+
+Tone: Casual, like you're just passing along a message from a mutual friend.`,
+    first_message: "Hey {{prospect_first_name}}, {{my_name}}. {{connection_name}} and I were talking and your name came up - {{connection_context}}. Figured I'd reach out. Let me know if you want to connect.",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_first_name',
+      'my_name',
+      'connection_name',
+      'connection_context',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'Name in first 5 seconds',
+      'Context feels natural',
+      'No hard sell',
+    ],
+    tags: ['voicemail', 'elite', 'referral', 'beginner'],
+  },
+  {
+    id: 'vm-the-confession',
+    name: 'The Confession',
+    description: 'Radical honesty. Admit what you are. It\'s disarming.',
+    category: 'voicemail',
+    difficulty: 'advanced',
+    duration_minutes: 1,
+    system_prompt: `You're being radically honest with {{prospect_first_name}}.
+
+What you're confessing: You're calling cold, you want their business, but you also genuinely think you can help.
+
+This works because everyone else hides behind corporate speak. You're just... honest. It's refreshing.
+
+Tone: Direct, human, slightly self-deprecating. Like you're in on the joke of sales.`,
+    first_message: "{{prospect_first_name}}, {{my_name}}. Look, I'm not gonna pretend we have a mutual friend or that I stumbled across your profile. I sell {{what_you_sell}}. I think it'd help you. I might be wrong. But if I'm not, we should talk. Cheers.",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_first_name',
+      'my_name',
+      'what_you_sell',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'Radically honest',
+      'Disarms skepticism',
+      'Confident without arrogance',
+    ],
+    tags: ['voicemail', 'elite', 'honest', 'advanced'],
+  },
+  {
+    id: 'vm-the-provocation',
+    name: 'The Provocation',
+    description: 'Challenge an assumption. Make them think.',
+    category: 'voicemail',
+    difficulty: 'advanced',
+    duration_minutes: 1,
+    system_prompt: `You're challenging {{prospect_first_name}} on something.
+
+The provocation: {{provocation}}
+
+This isn't insulting - it's thought-provoking. You're questioning a common assumption in their world. They'll either disagree (and want to tell you why) or agree (and want to explore it).
+
+Tone: Challenger. Confident. Peer-to-peer, not salesperson-to-buyer.`,
+    first_message: "{{prospect_first_name}}, {{my_name}}. Quick thought: {{provocation}}. I could be wrong. But I've seen a lot of teams get this backwards. Curious if you see it differently. Call me.",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_first_name',
+      'my_name',
+      'provocation',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'Provokes thought',
+      'Not insulting',
+      'Invites disagreement',
+    ],
+    tags: ['voicemail', 'elite', 'challenger', 'advanced'],
+  },
+  {
+    id: 'vm-the-timing',
+    name: 'The Timing',
+    description: 'Something just happened. The window is now.',
+    category: 'voicemail',
+    difficulty: 'intermediate',
+    duration_minutes: 1,
+    system_prompt: `Something just happened that makes NOW the right time to talk to {{prospect_first_name}}.
+
+What happened: {{timing_trigger}}
+Why it matters: {{why_now}}
+
+Urgency without being pushy. You're pointing out a window, not creating fake scarcity.
+
+Tone: Helpful urgency. Like you'd want someone to tell you this if you were them.`,
+    first_message: "{{prospect_first_name}}, {{my_name}}. Look, I know timing is everything and usually it's bad. But {{timing_trigger}}, and that usually means {{why_now}}. Might be worth 10 minutes this week. Let me know.",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_first_name',
+      'my_name',
+      'timing_trigger',
+      'why_now',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'Real urgency, not fake',
+      'Specific trigger',
+      'Clear why NOW matters',
+    ],
+    tags: ['voicemail', 'elite', 'timing', 'intermediate'],
+  },
+  {
+    id: 'vm-the-gift',
+    name: 'The Gift',
+    description: 'Give them something valuable. No strings attached.',
+    category: 'voicemail',
+    difficulty: 'intermediate',
+    duration_minutes: 1,
+    system_prompt: `You have something valuable to give {{prospect_first_name}}.
+
+The gift: {{the_gift}}
+
+You're giving this away whether they call back or not. No manipulation. Just genuine value. The callback comes from reciprocity and curiosity.
+
+Tone: Generous, no agenda. Like you're just sharing something cool you found.`,
+    first_message: "{{prospect_first_name}}, {{my_name}}. Hey, I put together {{the_gift}} - thought you might find it useful. I'll send it over either way. But if you want, I can walk you through the interesting parts. Let me know.",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_first_name',
+      'my_name',
+      'the_gift',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'Real value offered',
+      'No strings attached',
+      'Offer to explain adds callback reason',
+    ],
+    tags: ['voicemail', 'elite', 'value', 'intermediate'],
+  },
+  {
+    id: 'vm-the-question',
+    name: 'The Question',
+    description: 'One question they can\'t ignore. That\'s the whole message.',
+    category: 'voicemail',
+    difficulty: 'intermediate',
+    duration_minutes: 1,
+    system_prompt: `You have one question for {{prospect_first_name}} that they'll want to answer.
+
+The question: {{the_question}}
+
+This is the entire voicemail. One question. It should be specific enough that they know you did your homework, and provocative enough that they want to respond.
+
+Tone: Genuinely curious. Like you actually want to know the answer.`,
+    first_message: "{{prospect_first_name}}, {{my_name}}. Got a question for you: {{the_question}}? I've got a theory but I'm curious what you'd say. Hit me back.",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_first_name',
+      'my_name',
+      'the_question',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'Under 12 seconds',
+      'Question is specific',
+      'Implies you have insight to share',
+    ],
+    tags: ['voicemail', 'elite', 'question', 'intermediate'],
+  },
+  {
+    id: 'vm-the-second-try',
+    name: 'The Second Try',
+    description: 'You called before. Now you have something new.',
+    category: 'voicemail',
+    difficulty: 'intermediate',
+    duration_minutes: 1,
+    system_prompt: `This is your second attempt to reach {{prospect_first_name}}.
+
+What's new since last time: {{whats_new}}
+
+Don't guilt them. Don't "just follow up." Bring something NEW that makes this voicemail worth their time even if they ignored the first one.
+
+Tone: Unbothered, confident. You called, they didn't call back, life goes on. But now you have something worth sharing.`,
+    first_message: "{{prospect_first_name}}, {{my_name}} again. Listen, forget my last message. {{whats_new}}. That's actually why I'm calling now. Talk soon.",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_first_name',
+      'my_name',
+      'whats_new',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'Dismisses first attempt',
+      'New information only',
+      'No guilt or desperation',
+    ],
+    tags: ['voicemail', 'elite', 'follow-up', 'intermediate'],
+  },
+  {
+    id: 'vm-the-exit',
+    name: 'The Exit',
+    description: 'Last call. No guilt. Just class.',
+    category: 'voicemail',
+    difficulty: 'advanced',
+    duration_minutes: 1,
+    system_prompt: `This is your final voicemail to {{prospect_first_name}}.
+
+The pain point you solve: {{pain_point}}
+
+The breakup voicemail often gets the highest callback rate. Why? Relief + curiosity + respect. You're giving them permission to say no, which paradoxically makes them more likely to say yes.
+
+Tone: Graceful, confident, zero guilt. You're busy too. You're moving on. No hard feelings.`,
+    first_message: "{{prospect_first_name}}, {{my_name}}. Last voicemail from me - I know when to take a hint. If {{pain_point}} ever keeps you up at night, you've got my number. If not, no worries. Best of luck with everything.",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_first_name',
+      'my_name',
+      'pain_point',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'Zero guilt',
+      'Confident exit',
+      'Door left open with class',
+    ],
+    tags: ['voicemail', 'elite', 'breakup', 'advanced'],
+  },
+  {
+    id: 'vm-the-combo',
+    name: 'The Combo',
+    description: 'Email\'s in their inbox. This voicemail makes them open it.',
+    category: 'voicemail',
+    difficulty: 'beginner',
+    duration_minutes: 1,
+    system_prompt: `You just sent {{prospect_first_name}} an email.
+
+The hook in the email: {{email_hook}}
+
+This voicemail has ONE job: make them open the email. Don't summarize it. Create curiosity about what's in it.
+
+Tone: Quick, casual. Like you're just giving them a heads up.`,
+    first_message: "{{prospect_first_name}}, {{my_name}}. Just sent you something - check your inbox. {{email_hook}}. Let me know what you think.",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_first_name',
+      'my_name',
+      'email_hook',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'Under 10 seconds',
+      'Creates urgency to check email',
+      'Doesn\'t repeat email content',
+    ],
+    tags: ['voicemail', 'elite', 'email', 'beginner'],
+  },
+  {
+    id: 'voicemail-cold-first',
+    name: 'Cold Voicemail - First Touch',
+    description: 'First cold voicemail that creates curiosity without pitching.',
+    category: 'voicemail',
+    difficulty: 'beginner',
+    duration_minutes: 1,
+    system_prompt: `You're leaving a first-touch voicemail for {{prospect_name}} at {{prospect_company}}.
+
+This is a COLD voicemail - they don't know you.
+
+Formula (25 seconds max):
+1. "Hey {{prospect_name}}" (2 seconds)
+2. Your name + company (3 seconds)
+3. ONE specific reason you're calling - about THEM (10 seconds)
+4. Curiosity hook - what's in it for them (5 seconds)
+5. Phone number (slow, repeat) (5 seconds)
 
 Rules:
-- Under 30 seconds total
-- Sound natural, not scripted
-- Create curiosity
-- Don't pitch features`,
-    first_message: "{{prospect_name}}, {{caller_name}} from {{company_name}}. {{call_reason}}. {{value_hook}}. Give me a call at {{phone_number}}, that's {{phone_number_slow}}. Talk soon.",
+- NO pitch, NO features, NO "we help companies..."
+- Sound like a human, not a salesperson
+- Create ONE point of curiosity
+- Make them want to Google you or call back
+- End with energy, not trailing off`,
+    first_message: "Hey {{prospect_name}}, {{caller_name}} from {{company_name}}. Saw you're {{trigger_event}} and had a quick thought that might save you some headaches. Give me a shout at {{phone_number}}. That's {{phone_number_slow}}. Talk soon.",
     model: 'gpt-4-turbo',
     voice: 'alloy',
     variables: [
       'prospect_name',
       'prospect_company',
-      'attempt_number',
-      'previous_touches',
-      'call_reason',
       'caller_name',
       'company_name',
-      'value_hook',
+      'trigger_event',
       'phone_number',
       'phone_number_slow',
     ],
     objection_handlers: {},
     success_criteria: [
-      'Under 30 seconds',
-      'Clear callback reason',
-      'Number repeated twice',
+      'Under 25 seconds',
+      'Mentioned specific trigger',
+      'No product pitch',
+      'Number repeated clearly',
     ],
-    tags: ['voicemail', 'cold-call', 'follow-up', 'beginner'],
+    tags: ['voicemail', 'cold', 'first-touch', 'beginner'],
+  },
+  {
+    id: 'voicemail-referral',
+    name: 'Referral Voicemail',
+    description: 'Voicemail leveraging a mutual connection for instant credibility.',
+    category: 'voicemail',
+    difficulty: 'beginner',
+    duration_minutes: 1,
+    system_prompt: `You're leaving a voicemail for {{prospect_name}}, referred by {{referrer_name}}.
+
+Referral voicemails have HIGH callback rates - use the referrer's name early.
+
+Formula (20 seconds max):
+1. "Hey {{prospect_name}}" (2 seconds)
+2. "{{referrer_name}} suggested I give you a call" (3 seconds)
+3. Quick context on why (8 seconds)
+4. Phone number (slow, repeat) (7 seconds)
+
+Rules:
+- Lead with the referrer's name IMMEDIATELY
+- Don't over-explain - the referral does the work
+- Sound casual, like you're doing them a favor
+- The referrer already sold them, you're just following up`,
+    first_message: "Hey {{prospect_name}}, {{referrer_name}} suggested I reach out. Said you might be dealing with {{pain_hint}}. I'm {{caller_name}} - give me a ring at {{phone_number}}. Again, {{phone_number_slow}}. Talk soon.",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_name',
+      'referrer_name',
+      'pain_hint',
+      'caller_name',
+      'phone_number',
+      'phone_number_slow',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'Under 20 seconds',
+      'Referrer name in first 5 seconds',
+      'No over-explaining',
+    ],
+    tags: ['voicemail', 'referral', 'warm-intro', 'beginner'],
+  },
+  {
+    id: 'voicemail-follow-up-second',
+    name: 'Second Attempt Voicemail',
+    description: 'Follow-up voicemail after first attempt went unanswered.',
+    category: 'voicemail',
+    difficulty: 'beginner',
+    duration_minutes: 1,
+    system_prompt: `You're leaving a SECOND voicemail for {{prospect_name}}.
+
+They didn't call back the first time - this message needs a new angle.
+
+Formula (25 seconds max):
+1. "Hey {{prospect_name}}" (2 seconds)
+2. Quick callback to first message (4 seconds)
+3. NEW value hook they haven't heard (10 seconds)
+4. Specific ask or question (4 seconds)
+5. Phone number (slow, repeat) (5 seconds)
+
+Rules:
+- Acknowledge you called before (briefly)
+- Don't sound annoyed or desperate
+- Bring something NEW - don't repeat first message
+- End with a question to create response obligation`,
+    first_message: "Hey {{prospect_name}}, {{caller_name}} again. Tried you last {{last_attempt_day}}. Quick thought - {{new_angle}}. Curious if that's on your radar. {{phone_number}}, that's {{phone_number_slow}}.",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_name',
+      'caller_name',
+      'last_attempt_day',
+      'new_angle',
+      'phone_number',
+      'phone_number_slow',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'Referenced first call briefly',
+      'New hook/angle',
+      'Ended with question',
+      'Under 25 seconds',
+    ],
+    tags: ['voicemail', 'follow-up', 'second-attempt', 'beginner'],
+  },
+  {
+    id: 'voicemail-after-email',
+    name: 'Post-Email Voicemail',
+    description: 'Voicemail to follow up on an email you sent.',
+    category: 'voicemail',
+    difficulty: 'beginner',
+    duration_minutes: 1,
+    system_prompt: `You're leaving a voicemail to follow up on an email you sent {{prospect_name}}.
+
+Email + voicemail combo has 2x response rate. This VM should:
+- Reference the email
+- Give them a reason to open it
+- Not repeat the email content
+
+Formula (20 seconds max):
+1. "Hey {{prospect_name}}" (2 seconds)
+2. Reference the email briefly (4 seconds)
+3. One compelling reason to open it (8 seconds)
+4. Phone number (6 seconds)
+
+Rules:
+- Don't summarize the email
+- Create urgency or curiosity
+- Make opening the email feel valuable
+- Keep it conversational`,
+    first_message: "Hey {{prospect_name}}, {{caller_name}}. Just sent you a quick email - subject line is '{{email_subject}}'. Worth a look, especially the part about {{email_hook}}. Questions? Hit me back at {{phone_number}}. That's {{phone_number_slow}}.",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_name',
+      'caller_name',
+      'email_subject',
+      'email_hook',
+      'phone_number',
+      'phone_number_slow',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'Referenced email subject',
+      'Created reason to open',
+      'Under 20 seconds',
+    ],
+    tags: ['voicemail', 'email-follow-up', 'multi-channel', 'beginner'],
+  },
+  {
+    id: 'voicemail-meeting-confirm',
+    name: 'Meeting Confirmation Voicemail',
+    description: 'Voicemail to confirm an upcoming meeting and reduce no-shows.',
+    category: 'voicemail',
+    difficulty: 'beginner',
+    duration_minutes: 1,
+    system_prompt: `You're leaving a voicemail to confirm a meeting with {{prospect_name}}.
+
+Confirmation voicemails reduce no-shows by 40%. This should:
+- Confirm time/date
+- Re-sell the value of attending
+- Give them an easy out (paradoxically increases show rate)
+
+Formula (25 seconds max):
+1. "Hey {{prospect_name}}" (2 seconds)
+2. Confirm meeting details (5 seconds)
+3. Quick value reminder (8 seconds)
+4. Easy reschedule option (5 seconds)
+5. Phone number (5 seconds)
+
+Rules:
+- Sound excited to meet them
+- Remind them WHY they booked
+- Give permission to reschedule (reduces ghosts)`,
+    first_message: "Hey {{prospect_name}}, {{caller_name}}. Looking forward to our call on {{meeting_day}} at {{meeting_time}}. Quick heads up - I'll be ready to show you {{meeting_value}}. If something came up, no worries, just shoot me a text at {{phone_number}}. Otherwise, talk {{meeting_day}}!",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_name',
+      'caller_name',
+      'meeting_day',
+      'meeting_time',
+      'meeting_value',
+      'phone_number',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'Confirmed time clearly',
+      'Reminded of value',
+      'Gave easy out option',
+    ],
+    tags: ['voicemail', 'meeting', 'confirmation', 'beginner'],
+  },
+  {
+    id: 'voicemail-breakup',
+    name: 'Breakup Voicemail',
+    description: 'Final voicemail that often gets the highest callback rate.',
+    category: 'voicemail',
+    difficulty: 'intermediate',
+    duration_minutes: 1,
+    system_prompt: `You're leaving a FINAL voicemail for {{prospect_name}} after multiple attempts.
+
+Breakup voicemails often have the HIGHEST callback rate. Why:
+- Scarcity: "This is my last call"
+- Relief: They can finally close the loop
+- Curiosity: Did I miss something?
+
+Formula (20 seconds max):
+1. "Hey {{prospect_name}}" (2 seconds)
+2. "This is my last voicemail" (2 seconds)
+3. Acknowledge they're busy, give them an out (6 seconds)
+4. Leave the door open (5 seconds)
+5. Phone number (5 seconds)
+
+Rules:
+- NO guilt or passive aggression
+- Sound genuinely understanding
+- Make it easy for them to close the loop
+- Leave with confidence, not desperation`,
+    first_message: "Hey {{prospect_name}}, {{caller_name}}. This is my last voicemail - I get it, timing isn't always right. If {{pain_point}} becomes a priority down the road, I'm here. Either way, best of luck. {{phone_number}} if you ever want to chat.",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_name',
+      'caller_name',
+      'pain_point',
+      'phone_number',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'Clear this is final',
+      'No guilt or desperation',
+      'Left door open gracefully',
+      'Under 20 seconds',
+    ],
+    tags: ['voicemail', 'breakup', 'final', 'intermediate'],
+  },
+  {
+    id: 'voicemail-event-triggered',
+    name: 'Trigger Event Voicemail',
+    description: 'Voicemail based on a specific trigger event (funding, hiring, news).',
+    category: 'voicemail',
+    difficulty: 'intermediate',
+    duration_minutes: 1,
+    system_prompt: `You're leaving a voicemail for {{prospect_name}} based on a trigger event.
+
+Trigger: {{trigger_event}}
+Why it matters: {{trigger_relevance}}
+
+Trigger-based voicemails get 3x response rate because they're:
+- Timely
+- Specific to them
+- Show you did research
+
+Formula (25 seconds max):
+1. "Hey {{prospect_name}}" (2 seconds)
+2. Reference the specific trigger (5 seconds)
+3. Connect trigger to value you provide (10 seconds)
+4. Curiosity question (3 seconds)
+5. Phone number (5 seconds)
+
+Rules:
+- Be specific about the trigger
+- Show you understand WHY it matters
+- Don't stalk - be helpful
+- Create conversation, not a pitch`,
+    first_message: "Hey {{prospect_name}}, {{caller_name}}. Saw {{trigger_event}} - congrats. Usually when that happens, {{trigger_relevance}}. Had a thought that might help. Curious - {{curiosity_question}}? Hit me at {{phone_number}}. That's {{phone_number_slow}}.",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_name',
+      'caller_name',
+      'trigger_event',
+      'trigger_relevance',
+      'curiosity_question',
+      'phone_number',
+      'phone_number_slow',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'Specific trigger mentioned',
+      'Connected trigger to pain',
+      'Ended with question',
+      'Under 25 seconds',
+    ],
+    tags: ['voicemail', 'trigger', 'event', 'intermediate'],
+  },
+  {
+    id: 'voicemail-champion-reactivate',
+    name: 'Champion Reactivation Voicemail',
+    description: 'Voicemail to re-engage a champion who went quiet.',
+    category: 'voicemail',
+    difficulty: 'advanced',
+    duration_minutes: 1,
+    system_prompt: `You're leaving a voicemail for {{prospect_name}} - someone who was interested but went dark.
+
+Context:
+- Last contact: {{last_contact}}
+- They were interested in: {{original_interest}}
+- Deal stage when they went quiet: {{deal_stage}}
+
+Champion reactivation requires:
+- Acknowledge the gap without guilt
+- Remind them of the value (not the product)
+- Give them easy re-entry
+
+Formula (25 seconds max):
+1. "Hey {{prospect_name}}" (2 seconds)
+2. Light acknowledgment of time passed (3 seconds)
+3. New development or reason to reconnect (10 seconds)
+4. Easy next step (5 seconds)
+5. Phone number (5 seconds)
+
+Rules:
+- NO "just checking in" or "following up"
+- Bring something NEW
+- Make it easy to re-engage
+- Sound helpful, not desperate`,
+    first_message: "Hey {{prospect_name}}, {{caller_name}}. Been a minute. Quick update - {{new_development}}. Thought of you since you were looking at {{original_interest}}. Worth a quick chat? {{phone_number}}. That's {{phone_number_slow}}.",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_name',
+      'caller_name',
+      'last_contact',
+      'original_interest',
+      'deal_stage',
+      'new_development',
+      'phone_number',
+      'phone_number_slow',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'No guilt/blame',
+      'Brought new info',
+      'Referenced original interest',
+      'Easy re-entry point',
+    ],
+    tags: ['voicemail', 'reactivation', 'champion', 'advanced'],
+  },
+  {
+    id: 'voicemail-multi-thread',
+    name: 'Multi-Threading Voicemail',
+    description: 'Voicemail to reach a second contact when first contact is unresponsive.',
+    category: 'voicemail',
+    difficulty: 'advanced',
+    duration_minutes: 1,
+    system_prompt: `You're leaving a voicemail for {{prospect_name}} - a different contact at {{prospect_company}}.
+
+Your original contact: {{original_contact}}
+Why reaching this person: {{multithread_reason}}
+
+Multi-threading requires finesse:
+- Don't throw original contact under the bus
+- Position yourself as trying to help THEM
+- Make it about the company, not the chase
+
+Formula (25 seconds max):
+1. "Hey {{prospect_name}}" (2 seconds)
+2. How you know their company (4 seconds)
+3. Why you're reaching THEM specifically (10 seconds)
+4. Non-threatening ask (4 seconds)
+5. Phone number (5 seconds)
+
+Rules:
+- Never say "I couldn't reach [other person]"
+- Make it about their expertise/role
+- Position as collaboration, not runaround`,
+    first_message: "Hey {{prospect_name}}, {{caller_name}} from {{company_name}}. Been chatting with your team about {{project_context}}. Reaching out because {{multithread_reason}}. Would love your quick take. {{phone_number}}. That's {{phone_number_slow}}.",
+    model: 'gpt-4-turbo',
+    voice: 'alloy',
+    variables: [
+      'prospect_name',
+      'prospect_company',
+      'original_contact',
+      'multithread_reason',
+      'caller_name',
+      'company_name',
+      'project_context',
+      'phone_number',
+      'phone_number_slow',
+    ],
+    objection_handlers: {},
+    success_criteria: [
+      'No blame on original contact',
+      'Valid reason for this person',
+      'Collaborative tone',
+      'Under 25 seconds',
+    ],
+    tags: ['voicemail', 'multi-thread', 'stakeholder', 'advanced'],
   },
 ];
 
