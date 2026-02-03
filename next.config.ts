@@ -49,17 +49,6 @@ const nextConfig: NextConfig = {
         destination: '/prompts/:industry/:role',
         permanent: true,
       },
-      // Agentic redirects
-      {
-        source: '/agents',
-        destination: '/agentic-bdr',
-        permanent: true,
-      },
-      {
-        source: '/agents/:slug',
-        destination: '/agentic-bdr/:slug',
-        permanent: true,
-      },
       // API docs redirect
       {
         source: '/api-docs',
