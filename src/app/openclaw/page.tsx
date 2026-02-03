@@ -5,7 +5,7 @@ import { ArrowRight, Search, MessageSquare, Target, Terminal, Zap, Check } from 
 export const metadata: Metadata = {
   title: "OpenClaw Skills - Your Agentic Sales Team",
   description:
-    "Install Scout, Rep, and Closer. Three AI agents that find prospects, write outreach, and close deals 24/7.",
+    "Install Scout, Writer, Rep, and Closer. Four AI agents that find prospects, craft copy, engage, and close deals 24/7.",
   openGraph: {
     title: "OpenClaw GTM Skills - Agentic Sales Team",
     description: "Scout finds. Rep engages. Closer closes.",
@@ -23,6 +23,15 @@ export default function OpenClawPage() {
       color: 'text-blue-400',
       install: 'gtm-skills/scout',
       does: ['Find prospects 24/7', 'Company research', 'Buying signals'],
+    },
+    {
+      id: 'writer',
+      name: 'Writer',
+      role: 'Sales Copy & Content',
+      icon: Zap,
+      color: 'text-yellow-400',
+      install: 'gtm-skills/writer',
+      does: ['Elite cold emails', 'LinkedIn posts', 'Follow-up sequences'],
     },
     {
       id: 'rep',
@@ -56,18 +65,20 @@ export default function OpenClawPage() {
               Your Agentic Sales Team
             </h1>
             <p className="mx-auto mb-8 max-w-xl text-lg text-zinc-400">
-              Three AI agents. Find prospects. Write outreach. Close deals. 24/7.
+              Four AI agents. Find prospects. Craft copy. Engage. Close deals. 24/7.
             </p>
 
             <div className="mx-auto max-w-xl rounded-xl border border-orange-500/30 bg-zinc-900 p-5 mb-6">
               <div className="text-sm text-zinc-500 mb-2">Install the full team:</div>
               <code className="block text-lg text-orange-400 font-mono">
-                npx clawdhub install gtm-skills/scout gtm-skills/rep gtm-skills/closer
+                npx clawdhub install gtm-skills/scout gtm-skills/writer gtm-skills/rep gtm-skills/closer
               </code>
             </div>
 
-            <div className="flex items-center justify-center gap-2 text-sm text-zinc-500">
+            <div className="flex items-center justify-center gap-2 text-sm text-zinc-500 flex-wrap">
               <span className="text-blue-400">Scout finds</span>
+              <ArrowRight className="w-4 h-4" />
+              <span className="text-yellow-400">Writer crafts</span>
               <ArrowRight className="w-4 h-4" />
               <span className="text-green-400">Rep engages</span>
               <ArrowRight className="w-4 h-4" />
@@ -80,7 +91,7 @@ export default function OpenClawPage() {
       {/* Agents Grid */}
       <section className="py-12 border-b border-zinc-800">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-6 md:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {agents.map((agent) => {
               const Icon = agent.icon;
               return (
@@ -206,6 +217,11 @@ export default function OpenClawPage() {
               </div>
               <div className="flex items-center gap-4 bg-black/50 rounded px-4 py-2">
                 <span className="text-zinc-500 w-12">GET</span>
+                <code className="text-orange-400">/api/v1/agents/writer/skill</code>
+                <span className="text-zinc-600 text-xs ml-auto">Writer SKILL.md</span>
+              </div>
+              <div className="flex items-center gap-4 bg-black/50 rounded px-4 py-2">
+                <span className="text-zinc-500 w-12">GET</span>
                 <code className="text-orange-400">/api/v1/agents/rep/skill</code>
                 <span className="text-zinc-600 text-xs ml-auto">Rep SKILL.md</span>
               </div>
@@ -260,7 +276,7 @@ export default function OpenClawPage() {
         <div className="mx-auto max-w-2xl px-4 text-center sm:px-6 lg:px-8">
           <div className="rounded-xl border border-orange-500/30 bg-zinc-900 p-6 mb-6">
             <code className="block text-lg text-orange-400 font-mono">
-              npx clawdhub install gtm-skills/scout gtm-skills/rep gtm-skills/closer
+              npx clawdhub install gtm-skills/scout gtm-skills/writer gtm-skills/rep gtm-skills/closer
             </code>
           </div>
 

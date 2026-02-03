@@ -16,6 +16,7 @@ import {
   ArrowRight,
   Mail,
   Zap,
+  PenTool,
 } from 'lucide-react';
 
 const agents = [
@@ -48,7 +49,41 @@ Scout: "On it. What size? What stage? VP level or Director?"
 
 You: "Series B, VP of Sales"
 Scout: "Found 10. Top pick is Sarah Chen at Acme - just raised $25M,
-       hiring 5 SDRs. Want me to get her email and brief Rep?"`,
+       hiring 5 SDRs. Want me to get her email and brief Writer?"`,
+  },
+  {
+    id: 'writer',
+    name: 'Writer',
+    role: 'Sales Copy & Content',
+    email: 'writer@gtm-skills.com',
+    icon: PenTool,
+    color: 'text-yellow-400',
+    bgColor: 'bg-yellow-500/10',
+    borderColor: 'border-yellow-500/30',
+    description: 'Writes elite sales copy. Cold emails that get replies. LinkedIn posts that drive engagement. Follow-ups that convert.',
+    personality: ['Sharp', 'Creative', 'Concise', 'Persuasive', 'Proactive'],
+    capabilities: [
+      'Elite cold email copy',
+      'LinkedIn posts & DMs',
+      'Follow-up sequences',
+      'Subject line optimization',
+      'Value prop messaging',
+    ],
+    resources: [
+      { name: '24 Tonalities', url: '/free-tools/tonalities' },
+      { name: 'Alex Hormozi Style', url: '/free-tools/tonalities/alex-hormozi' },
+      { name: 'Hemingway Style', url: '/free-tools/tonalities/hemingway' },
+    ],
+    install: 'npx clawdhub install gtm-skills/writer',
+    example: `You: "Write a cold email to Sarah - she's hiring SDRs"
+Writer: "Got it. What's the angle - ramp time, quota attainment, or turnover?
+        And what's your one sentence value prop?"
+
+You: "Ramp time. We cut it in half."
+Writer: [Writes email] "Done. Subject line A/B options:
+        A: 'SDR ramp time'
+        B: '47 days'
+        Which one, or want me to try edgier?"`,
   },
   {
     id: 'rep',
@@ -138,7 +173,7 @@ export default function AgentsPage() {
             Meet the Team
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-            Three AI agents. Your 24/7 sales team. They find prospects, write outreach, and close deals.
+            Four AI agents. Your 24/7 sales team. They find prospects, write copy, engage, and close deals.
           </p>
           <p className="text-sm text-muted-foreground">
             <strong>The Golden Rule:</strong> Every agent ends responses with a question or suggestion.
@@ -157,13 +192,13 @@ export default function AgentsPage() {
             </div>
             <div className="flex flex-col gap-2">
               <code className="bg-black/50 rounded-lg px-4 py-2 text-orange-400 font-mono text-sm">
-                npx clawdhub install gtm-skills/scout gtm-skills/rep gtm-skills/closer
+                npx clawdhub install gtm-skills/scout gtm-skills/writer gtm-skills/rep gtm-skills/closer
               </code>
               <Button
                 variant="outline"
                 size="sm"
                 className="w-full"
-                onClick={() => handleCopy('npx clawdhub install gtm-skills/scout gtm-skills/rep gtm-skills/closer', 'all')}
+                onClick={() => handleCopy('npx clawdhub install gtm-skills/scout gtm-skills/writer gtm-skills/rep gtm-skills/closer', 'all')}
               >
                 {copiedId === 'all' ? (
                   <>
@@ -183,8 +218,10 @@ export default function AgentsPage() {
 
         {/* Flow Diagram */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-4 text-sm">
+          <div className="inline-flex items-center gap-4 text-sm flex-wrap justify-center">
             <span className="text-blue-400 font-semibold">Scout finds</span>
+            <ArrowRight className="w-4 h-4 text-muted-foreground" />
+            <span className="text-yellow-400 font-semibold">Writer crafts</span>
             <ArrowRight className="w-4 h-4 text-muted-foreground" />
             <span className="text-green-400 font-semibold">Rep engages</span>
             <ArrowRight className="w-4 h-4 text-muted-foreground" />
@@ -326,6 +363,11 @@ export default function AgentsPage() {
               <span className="text-muted-foreground">GET</span>
               <code className="text-orange-400">/api/v1/agents/scout/skill</code>
               <span className="text-muted-foreground text-xs">Scout SKILL.md</span>
+            </div>
+            <div className="flex items-center justify-between bg-secondary/50 rounded px-3 py-2">
+              <span className="text-muted-foreground">GET</span>
+              <code className="text-orange-400">/api/v1/agents/writer/skill</code>
+              <span className="text-muted-foreground text-xs">Writer SKILL.md</span>
             </div>
             <div className="flex items-center justify-between bg-secondary/50 rounded px-3 py-2">
               <span className="text-muted-foreground">GET</span>

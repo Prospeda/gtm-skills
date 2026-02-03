@@ -38,6 +38,29 @@ const agents = [
     github: 'https://github.com/Prospeda/gtm-skills/blob/main/openclaw-skills/scout/SKILL.md',
   },
   {
+    id: 'writer',
+    name: 'Writer',
+    role: 'Sales Copy & Content',
+    email: 'writer@gtm-skills.com',
+    description: 'Writes elite sales copy. Cold emails that get replies. LinkedIn posts that drive engagement. Follow-ups that convert.',
+    personality: ['Sharp', 'Creative', 'Concise', 'Persuasive', 'Proactive'],
+    capabilities: [
+      'Elite cold email copy',
+      'LinkedIn posts & DMs',
+      'Follow-up sequences',
+      'Subject line optimization',
+      'Value prop messaging',
+    ],
+    resources: [
+      { name: 'Tonalities', url: 'https://gtm-skills.com/free-tools/tonalities' },
+      { name: 'Alex Hormozi Style', url: 'https://gtm-skills.com/free-tools/tonalities/alex-hormozi' },
+      { name: 'Hemingway Style', url: 'https://gtm-skills.com/free-tools/tonalities/hemingway' },
+    ],
+    install: 'npx clawdhub install gtm-skills/writer',
+    skill_url: 'https://gtm-skills.com/api/v1/agents/writer/skill',
+    github: 'https://github.com/Prospeda/gtm-skills/blob/main/openclaw-skills/writer/SKILL.md',
+  },
+  {
     id: 'rep',
     name: 'Rep',
     role: 'Outreach & Engagement',
@@ -93,9 +116,9 @@ const agents = [
 export async function GET() {
   const response = {
     team: 'GTM Skills Agentic Sales Team',
-    description: 'Three AI agents. Your 24/7 sales team.',
-    install_all: 'npx clawdhub install gtm-skills/scout gtm-skills/rep gtm-skills/closer',
-    flow: 'Scout finds → Rep engages → Closer closes',
+    description: 'Four AI agents. Your 24/7 sales team.',
+    install_all: 'npx clawdhub install gtm-skills/scout gtm-skills/writer gtm-skills/rep gtm-skills/closer',
+    flow: 'Scout finds → Writer crafts → Rep engages → Closer closes',
     agents,
     golden_rule: 'Every agent ends responses with a question or suggestion. They are teammates, not tools.',
     documentation: 'https://gtm-skills.com/agents',
